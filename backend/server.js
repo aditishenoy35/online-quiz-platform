@@ -1,9 +1,10 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors'); 
 require('dotenv').config();
 
 const app = express();
-
+app.use(cors());
 // Middleware
 app.use(express.json()); // For parsing JSON
 
@@ -20,6 +21,9 @@ const connectDB = async () => {
 
 // Connect to database
 connectDB();
+
+//adding route for user authorization
+app.use('/api/auth', require('./routes/auth'));
 
 // Basic Route
 app.get('/', (req, res) => {
