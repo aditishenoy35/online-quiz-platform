@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/Home.css'; // Assuming you have the required styles
+import QuizPreview from '../component/QuizPreview';
 
 const Home = () => {
   return (
@@ -66,24 +67,7 @@ const Home = () => {
           </div>
         </section>
         <section className="quiz-preview">
-          <div className="container">
-            <h2>Quiz Previews</h2>
-            <div className="quiz-grid">
-              {/* Wrap each quiz card inside a Link */}
-              <Link to="/login" className="quiz-card">
-                <img src="/images/quiz2.jpg" alt="Quiz 1" />
-                <h3>General Knowledge</h3>
-              </Link>
-              <Link to="/login" className="quiz-card">
-                <img src="/images/quiz3.jpg" alt="Quiz 2" />
-                <h3>Science & Tech</h3>
-              </Link>
-              <Link to="/login" className="quiz-card">
-                <img src="/images/quiz4.jpg" alt="Quiz 3" />
-                <h3>Pop Culture</h3>
-              </Link>
-            </div>
-          </div>
+          <QuizPreview />
         </section>
 
         {/* Features Section */}

@@ -23,6 +23,7 @@ const connectDB = async () => {
 connectDB();
 
 //adding route for user authorization
+app.use('/api',require('./routes/quizRoutes'))
 app.use('/api/auth', require('./routes/auth'));
 
 // Basic Route
