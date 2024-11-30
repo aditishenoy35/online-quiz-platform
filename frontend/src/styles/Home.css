@@ -286,3 +286,18 @@ ul {
 .social-links-horizontal a:hover {
     color: #2ecc71;
 }
+
+.try-now-button {
+    display: inline-block;
+    background-color:  #2ecc71;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    text-align: center;
+    margin-top: 10px;
+  }
+  
+  .try-now-button:hover {
+    background-color:  #58f69a;
+  }

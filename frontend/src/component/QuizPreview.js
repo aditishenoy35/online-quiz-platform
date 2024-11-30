@@ -1,6 +1,7 @@
 import '../styles/Home.css';
 import React, { useEffect, useState } from 'react';
 import { fetchDefaultQuizzes } from '../api'; // Import the function to fetch quizzes
+import { Link } from 'react-router-dom';
 
 const QuizPreview = () => {
   const [quizzes, setQuizzes] = useState([]); // State to store the quizzes
@@ -32,6 +33,7 @@ const QuizPreview = () => {
     return <p>{error}</p>;
   }
 
+
   return (
     <section className="quiz-preview">
       <div className="container">
@@ -45,6 +47,9 @@ const QuizPreview = () => {
               </div>
               <h3>{quiz.title}</h3>
               <p>{quiz.description}</p>
+              <Link to="/login" className="try-now-button">
+                Try Now
+              </Link>
             </div>
           ))}
         </div>
