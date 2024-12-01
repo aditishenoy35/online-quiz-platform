@@ -1,15 +1,17 @@
 /* General Styles */
-body {
-    margin: 0;
-    font-family: 'Arial', sans-serif;
-    line-height: 1.6;
-    color: #333;
+body, html {
+    margin: 0; /* Remove default margins */
+    padding: 0; /* Remove default padding */
+    width: 100%; /* Ensure full width */
+    overflow-x: hidden; /* Prevent horizontal scrolling */
 }
 
 .container {
-    width: 90%;
-    max-width: 1200px;
-    margin: 0 auto;
+    width: 100%; /* Full width */
+    max-width: 100%; /* Ensure no limit */
+    margin: 0 auto; /* Center content */
+    padding: 0; /* Remove padding */
+    box-sizing: border-box; /* Include padding and border in width */
 }
 
 ul {
@@ -22,9 +24,11 @@ ul {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 0;
+    width: 100%; /* Ensure header spans full width */
+    padding: 1rem; /* Add spacing */
     background: #2c3e50;
     color: #fff;
+    box-sizing: border-box; /* Include padding in width */
 }
 
 .branding h1 {
@@ -50,8 +54,10 @@ ul {
 
 /* Hero Section */
 .hero {
+    width: 100%; /* Full width */
+    padding: 4rem 2rem; /* Add intentional spacing */
     background: #ecf0f1;
-    padding: 4rem 0;
+    box-sizing: border-box;
 }
 
 .hero-layout {
@@ -97,8 +103,10 @@ ul {
 
 /* About Section */
 .about {
-    padding: 4rem 0;
+    width: 100%; /* Full width */
+    padding: 4rem 2rem; /* Add intentional spacing */
     background-color: #f8f9fc;
+    box-sizing: border-box;
 }
 
 .about-layout {
@@ -156,8 +164,10 @@ ul {
 
 /* Quiz Preview Section */
 .quiz-preview {
-    padding: 4rem 0;
+    width: 100%; /* Full width */
+    padding: 4rem 2rem; /* Add intentional spacing */
     background: #fff;
+    box-sizing: border-box;
 }
 
 .quiz-preview h2 {
@@ -199,10 +209,12 @@ ul {
 
 /* Features Section */
 .features {
-    padding: 4rem 0;
+    width: 100%; /* Full width */
+    padding: 4rem 2rem; /* Add intentional spacing */
     background: #ecf0f1;
     text-align: center;
     transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for transform and shadow */
+    box-sizing: border-box;
 }
 
 .features h2 {
@@ -244,16 +256,20 @@ ul {
 
 /* Footer Section */
 .footer {
-    padding: 1rem 0;
+    width: 100%; /* Full width */
+    padding: 1rem 2rem; /* Add intentional spacing */
     background: #2c3e50;
     color: #fff;
     text-align: center;
+    box-sizing: border-box;
 }
 
 /* Contact Section */
 .contact {
-    padding: 4rem 0;
+    width: 100%; /* Full width */
+    padding: 4rem 2rem; /* Add intentional spacing */
     background: #f9f9f9;
+    box-sizing: border-box;
 }
 
 .contact h2 {
@@ -289,15 +305,15 @@ ul {
 
 .try-now-button {
     display: inline-block;
-    background-color:  #2ecc71;
+    background-color: #2ecc71;
     color: white;
     padding: 10px 20px;
     text-decoration: none;
     border-radius: 5px;
     text-align: center;
     margin-top: 10px;
-  }
-  
-  .try-now-button:hover {
-    background-color:  #58f69a;
-  }
+}
+
+.try-now-button:hover {
+    background-color: #58f69a;
+}

@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { loginUser } from '../api';
+import { Link } from 'react-router-dom';
+import '../styles/Login.css';
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -13,22 +15,47 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await loginUser(formData);
-      localStorage.setItem('token', response.data.token); // Save token for protected routes
+      localStorage.setItem('token', response.data.token);
       setMessage('Login successful!');
-      console.log(response.data); // You can navigate to another page
     } catch (err) {
       setMessage(err.response?.data?.msg || 'Error occurred');
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Login</h2>
-      <input type="email" name="email" placeholder="Email" onChange={handleChange} required />
-      <input type="password" name="password" placeholder="Password" onChange={handleChange} required />
-      <button type="submit">Login</button>
-      {message && <p>{message}</p>}
-    </form>
+    <div className="login-container">
+  
+  <form className="login-form" onSubmit={handleSubmit}>
+    <h2>Welcome Back!</h2>
+    <p>Ready to challenge yourself? Login to continue!</p>
+    <input
+      type="email"
+      name="email"
+      placeholder="Email"
+      onChange={handleChange}
+      required
+    />
+    <input
+      type="password"
+      name="password"
+      placeholder="Password"
+      onChange={handleChange}
+      required
+    />
+    <button type="submit">Login</button>
+    {message && <p className="message">{message}</p>}
+    <p>
+      Don't have an account? <Link to="/register">Register here</Link>
+    </p>
+    <Link to="/" className="back-home">
+      <button type="button">Back to Homepage</button>
+    </Link>
+  </form>
+  <footer>
+    <p>© 2024 QuizHive. All rights reserved.</p>
+  </footer>
+</div>
+
   );
 };
 

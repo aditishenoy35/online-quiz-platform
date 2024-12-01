@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { registerUser } from '../api';
+import { Link } from 'react-router-dom';
+import '../styles/Register.css';
 
 const Register = () => {
   const [formData, setFormData] = useState({ name: '', email: '', password: '' });
@@ -14,21 +16,51 @@ const Register = () => {
     try {
       const response = await registerUser(formData);
       setMessage('Registration successful!');
-      console.log(response.data); // You may want to store the token or navigate
     } catch (err) {
       setMessage(err.response?.data?.msg || 'Error occurred');
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Register</h2>
-      <input type="text" name="name" placeholder="Name" onChange={handleChange} required />
-      <input type="email" name="email" placeholder="Email" onChange={handleChange} required />
-      <input type="password" name="password" placeholder="Password" onChange={handleChange} required />
-      <button type="submit">Register</button>
-      {message && <p>{message}</p>}
-    </form>
+    <div className="register-container">
+  <form className="register-form" onSubmit={handleSubmit}>
+    <h2>Start Your Journey</h2>
+    <p>Sign up now and explore the world of quizzes!</p>
+    <input
+      type="text"
+      name="name"
+      placeholder="Name"
+      onChange={handleChange}
+      required
+    />
+    <input
+      type="email"
+      name="email"
+      placeholder="Email"
+      onChange={handleChange}
+      required
+    />
+    <input
+      type="password"
+      name="password"
+      placeholder="Password"
+      onChange={handleChange}
+      required
+    />
+    <button type="submit">Register</button>
+    {message && <p className="message">{message}</p>}
+    <p>
+      Already have an account? <Link to="/login">Login here</Link>
+    </p>
+    <Link to="/" className="back-home">
+      <button type="button">Back to Homepage</button>
+    </Link>
+  </form>
+  <footer>
+    <p>© 2024 QuizHive. All rights reserved.</p>
+  </footer>
+</div>
+
   );
 };
 
