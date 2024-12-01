@@ -95,3 +95,28 @@ a {
 a:hover {
     text-decoration: underline;
 }
+
+/* Password Input Styles */
+.password-input {
+    position: relative;
+    width: 100%; /* Ensure it aligns with the form width */
+}
+
+.password-input input {
+    width: 100%; /* Ensure the input spans the container width */
+    padding-right: 40px; /* Leave space for the eye icon */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 0.8rem; /* Match other input styles */
+    font-size: 1rem;
+}
+
+.password-toggle-icon {
+    position: absolute;
+    top: 50%;
+    right: 10px; /* Position inside the input field */
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: #555; /* Icon color */
+}
