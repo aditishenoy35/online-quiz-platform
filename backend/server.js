@@ -1,6 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors'); 
+const quizRoutes = require('./routes/quizRoutes');
+const auth = require('./routes/auth')
 require('dotenv').config();
 
 const app = express();
@@ -23,8 +25,8 @@ const connectDB = async () => {
 connectDB();
 
 //adding route for user authorization
-app.use('/api',require('./routes/quizRoutes'))
-app.use('/api/auth', require('./routes/auth'));
+app.use('/api/quizzes',quizRoutes)
+app.use('/api/auth', auth);
 
 // Basic Route
 app.get('/', (req, res) => {

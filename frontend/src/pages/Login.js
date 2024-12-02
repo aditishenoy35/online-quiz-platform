@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { loginUser } from '../api';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../styles/Login.css';
 import { FaEye, FaEyeSlash } from 'react-icons/fa'; // Import icons for eye toggle
 
@@ -8,7 +8,7 @@ const Login = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [message, setMessage] = useState('');
   const [showPassword, setShowPassword] = useState(false); // State for toggling password visibility
-
+  const navigate=useNavigate();
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -19,6 +19,7 @@ const Login = () => {
       const response = await loginUser(formData);
       localStorage.setItem('token', response.data.token);
       setMessage('Login successful!');
+      navigate("/quizzes");
     } catch (err) {
       setMessage(err.response?.data?.msg || 'Error occurred');
     }

@@ -1,5 +1,5 @@
 const express = require('express');
-const { getDefaultQuizzes, getAllQuizzes } = require('../controllers/quizController');
+const { getDefaultQuizzes, getAllQuizzes , getCategories} = require('../controllers/quizController');
 
 const router = express.Router();
 
@@ -8,5 +8,8 @@ router.get('/default-quizzes', getDefaultQuizzes);
 
 // Fetch all quizzes
 router.get('/all-quizzes', getAllQuizzes);
+
+//Fetch categories
+router.get('/categories', getCategories);
 
 module.exports = router;
