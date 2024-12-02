@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/Home.css'; // Assuming you have the required styles
 import QuizPreview from '../component/QuizPreview';
-
+//creating home function 
 const Home = () => {
   return (
     <div className="home">
