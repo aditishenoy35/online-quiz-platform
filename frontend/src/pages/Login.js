@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { loginUser } from '../api';
 import { Link, useNavigate } from 'react-router-dom';
 import '../styles/Login.css';
@@ -12,6 +12,15 @@ const Login = () => {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+  useEffect(() => {
+    // Add the class to the body
+    document.body.classList.add('login-body');
+
+    return () => {
+      // Remove the class when the component unmounts
+      document.body.classList.remove('login-body');
+    };
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

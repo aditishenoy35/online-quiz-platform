@@ -1,5 +1,5 @@
 /* General Styles */
-body {
+.register-body {
     margin: 0;
     font-family: 'Arial', sans-serif;
     background: linear-gradient(to right, #f0f2f5, #dcdde1);
@@ -7,7 +7,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh; /* Ensures full height on any screen size */
+    min-height: 100vh; /* Full viewport height */
 }
 
 /* Register Page Styles */

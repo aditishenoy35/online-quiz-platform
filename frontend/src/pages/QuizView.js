@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import QuizFilters from '../component/QuizFilters';  // Assuming QuizFilter is correctly imported
 import { fetchAllQuizzes } from '../api';  // Assuming you've already saved the API function in api.js
+import Navbar from '../component/Navbar'; // Import the Navbar component
 
 const QuizView = () => {
   // State for quizzes, difficulty, category, and filtered quizzes
@@ -34,28 +35,35 @@ const QuizView = () => {
   }, [difficulty, category]);  // Re-run when filters change
 
   return (
-    <div className="quiz-view">
-      <QuizFilters
-        difficulty={difficulty}
-        setDifficulty={setDifficulty}
-        category={category}
-        setCategory={setCategory}
-      /> {/* Filters component */}
+    <div style={{ display: 'flex' }}>
+      {/* Sidebar (Navbar) */}
+      <Navbar />
 
-      <div className="quiz-list">
-        {quizzes.length > 0 ? (
-          quizzes.map((quiz) => (
-            <div key={quiz._id} className="quiz-card">
-              <h2>{quiz.title}</h2>
-              <p>Category: {quiz.category}</p>
-              <p>Difficulty: {quiz.difficulty}</p>
-              <p>{quiz.description}</p>
-              {/* Add more details or functionality as needed */}
-            </div>
-          ))
-        ) : (
-          <p>No quizzes found</p>
-        )}
+      {/* Content Area */}
+      <div style={{ flex: 1, padding: '20px', backgroundColor: '#f4f4f9' }}>
+        {/* Filters component */}
+        <QuizFilters
+          difficulty={difficulty}
+          setDifficulty={setDifficulty}
+          category={category}
+          setCategory={setCategory}
+        />
+
+        <div className="quiz-list">
+          {quizzes.length > 0 ? (
+            quizzes.map((quiz) => (
+              <div key={quiz._id} className="quiz-card">
+                <h2>{quiz.title}</h2>
+                <p>Category: {quiz.category}</p>
+                <p>Difficulty: {quiz.difficulty}</p>
+                <p>{quiz.description}</p>
+                {/* Add more details or functionality as needed */}
+              </div>
+            ))
+          ) : (
+            <p>No quizzes found</p>
+          )}
+        </div>
       </div>
     </div>
   );

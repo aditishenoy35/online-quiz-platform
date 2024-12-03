@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { registerUser } from '../api';
 import { Link, useNavigate } from 'react-router-dom';
 import '../styles/Register.css';
@@ -9,6 +9,16 @@ const Register = () => {
   const [message, setMessage] = useState('');
   const [showPassword, setShowPassword] = useState(false); // State for toggling password visibility
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Add the class to the body
+    document.body.classList.add('register-body');
+
+    return () => {
+      // Remove the class when the component unmounts
+      document.body.classList.remove('register-body');
+    };
+  }, []);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
