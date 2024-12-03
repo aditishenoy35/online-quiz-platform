@@ -26,7 +26,10 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await loginUser(formData);
-      localStorage.setItem('token', response.data.token);
+      const { token, userId } = response.data;
+      // Save both token and userId to localStorage
+      localStorage.setItem('token', token);
+      localStorage.setItem('userId', userId);
       setMessage('Login successful!');
       navigate("/quizzes");
     } catch (err) {

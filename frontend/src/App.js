@@ -8,6 +8,7 @@ import CreateQuiz from './pages/CreateQuiz';
 import QuizHistory from './pages/QuizHistory';
 import Leaderboard from './pages/Leaderboard';
 import PrivateRoute from './component/PrivateRoute'; // For protected routes
+import StartQuiz from './pages/StartQuiz'; 
 
 const App = () => {
   return (
@@ -23,6 +24,10 @@ const App = () => {
         <Route path="/create" element={<PrivateRoute><CreateQuiz /></PrivateRoute>} />
         <Route path="/history" element={<PrivateRoute><QuizHistory /></PrivateRoute>} />
         <Route path="/leaderboard" element={<PrivateRoute><Leaderboard /></PrivateRoute>} />
+        {/* Route for StartQuiz - Dynamic path with quizId */}
+        <Route path="/quiz/:quizId/start" element={<PrivateRoute><StartQuiz /></PrivateRoute>} />
+
+
 
         {/* Catch-all route */}
         <Route path="*" element={<Home />} />

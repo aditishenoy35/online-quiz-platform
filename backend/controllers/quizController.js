@@ -44,3 +44,18 @@ exports.getCategories = async (req, res) => {
     res.status(500).json({ message: "Error fetching categories" });
   }
 };
+
+// Fetch quiz details by ID
+exports.fetchQuizById = async (req, res) => {
+  const quizId = req.params.id;
+  try {
+    const quiz = await Quiz.findById(quizId);
+    if (!quiz) return res.status(404).json({ error: 'Quiz not found' });
+
+    res.status(200).json(quiz);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Server error' });
+  }
+};
+
