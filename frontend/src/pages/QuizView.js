@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import QuizFilters from '../component/QuizFilters';  // Assuming QuizFilter is correctly imported
 import { fetchAllQuizzes } from '../api';  // Assuming you've already saved the API function in api.js
 import Navbar from '../component/Navbar'; // Import the Navbar component
+import '../styles/Dashboard.css'
 
 const QuizView = () => {
   // State for quizzes, difficulty, category, and filtered quizzes
@@ -53,7 +54,8 @@ const QuizView = () => {
           {quizzes.length > 0 ? (
             quizzes.map((quiz) => (
               <div key={quiz._id} className="quiz-card">
-                <h2>{quiz.title}</h2>
+                
+                <h2 className='header'>{quiz.title}</h2>
                 <p>Category: {quiz.category}</p>
                 <p>Difficulty: {quiz.difficulty}</p>
                 <p>{quiz.description}</p>
