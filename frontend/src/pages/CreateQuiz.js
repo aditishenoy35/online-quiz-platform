@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
 import Navbar from '../component/Navbar';
+import { quizCreation } from '../api';
 
 const CreateQuiz = () => {
+  const [quizTitle, setQuizTitle] = useState("Default Quiz Title");
+  const [category, setCategory] = useState("General Knowledge");
+  const [difficulty, setDifficulty] = useState("easy");
   const [questions, setQuestions] = useState([
     {
       questionText: '',
       options: ['', '', '', ''],
-      correctAnswer: '', // Added correctAnswer field for each question
+      correctAnswer: '',
     },
   ]);
 
@@ -29,6 +33,23 @@ const CreateQuiz = () => {
     setQuestions(updatedQuestions);
   };
 
+  const handleSaveQuiz = async () => {
+    try {
+      const payload = {
+        title: quizTitle,
+        category,
+        difficulty,
+        questions,
+      };
+      const response = await quizCreation(payload);
+      console.log('Quiz saved successfully:', response.data);
+      alert('Quiz saved successfully!');
+    } catch (error) {
+      console.error('Error saving quiz:', error);
+      alert('Failed to save quiz. Please try again.');
+    }
+  };
+
   return (
     <div style={{ display: 'flex' }}>
       <Navbar />
@@ -40,7 +61,8 @@ const CreateQuiz = () => {
             <input
               type="text"
               id="quizTitle"
-              defaultValue="Default Quiz Title"
+              value={quizTitle}
+              onChange={(e) => setQuizTitle(e.target.value)}
               style={{ marginLeft: '10px', padding: '5px' }}
             />
           </div>
@@ -50,7 +72,8 @@ const CreateQuiz = () => {
             <input
               type="text"
               id="category"
-              defaultValue="General Knowledge"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
               style={{ marginLeft: '10px', padding: '5px' }}
             />
           </div>
@@ -59,6 +82,8 @@ const CreateQuiz = () => {
             <label htmlFor="difficulty">Difficulty:</label>
             <select
               id="difficulty"
+              value={difficulty}
+              onChange={(e) => setDifficulty(e.target.value)}
               style={{ marginLeft: '10px', padding: '5px' }}
             >
               <option value="easy">Easy</option>
@@ -132,6 +157,20 @@ const CreateQuiz = () => {
             </button>
           </div>
         </form>
+        <button
+          type="button"
+          onClick={handleSaveQuiz}
+          style={{
+            marginTop: '20px',
+            padding: '10px',
+            backgroundColor: '#28A745',
+            color: 'white',
+            border: 'none',
+            cursor: 'pointer',
+          }}
+        >
+          Save Quiz
+        </button>
       </div>
     </div>
   );
