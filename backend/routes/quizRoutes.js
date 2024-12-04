@@ -1,5 +1,6 @@
 const express = require('express');
 const { getDefaultQuizzes, getAllQuizzes , getCategories} = require('../controllers/quizController');
+const { createQuiz } = require('../controllers/quizCreation');
 
 const router = express.Router();
 
@@ -11,5 +12,8 @@ router.get('/all-quizzes', getAllQuizzes);
 
 //Fetch categories
 router.get('/categories', getCategories);
+
+// Create a quiz
+router.post('/create', createQuiz);
 
 module.exports = router;
