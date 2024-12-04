@@ -1,27 +1,23 @@
 import React from 'react';
-import './Header.css';
+import { useNavigate } from 'react-router-dom';
+import '../styles/Header.css'; // Add a separate CSS file for the header styles
 
 const Header = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    // Add your logout logic here
+    console.log('Logout clicked');
+    navigate('/login');
+  };
+
   return (
-    <header className="header">
-      <div className="header-container">
-        {/* Logo */}
-        <div className="logo">
-          <img src="logo.png" alt="Logo" />
-        </div>
-
-        {/* Title */}
-        <h1 className="title">Quiz App</h1>
-
-        {/* Navigation */}
-        <nav className="nav-links">
-          <a href="#home" className="nav-link">Home</a>
-          <a href="#quizzes" className="nav-link">Quizzes</a>
-          <a href="#about" className="nav-link">About</a>
-          <a href="#contact" className="nav-link">Contact</a>
-        </nav>
-      </div>
-    </header>
+    <div className="header-container">
+      <div className="platform-name">QuizHive</div>
+      <button className="logout-button" onClick={handleLogout}>
+        Logout
+      </button>
+    </div>
   );
 };
 
