@@ -7,7 +7,6 @@ const QuizSchema = new mongoose.Schema({
     difficulty: { type: String, enum: ["Easy", "Medium", "Hard"] },
     questions: [
       {
-        questionId: { type: mongoose.Schema.Types.ObjectId, auto: true },
         text: { type: String, required: true },
         options: [
           { text: { type: String, required: true }, isCorrect: { type: Boolean } }
