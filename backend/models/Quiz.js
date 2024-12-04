@@ -13,7 +13,7 @@ const QuizSchema = new mongoose.Schema({
         ],
       }
     ],
-    createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: false },
     isDefault: { type: Boolean, default: false },
     /*
     createdAt: { type: Date, default: Date.now },

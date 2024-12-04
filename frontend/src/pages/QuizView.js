@@ -38,7 +38,7 @@ const QuizView = () => {
   }, [difficulty, category]);
 
   const handleStartClick = (quizId) => {
-    navigate(`#`); // Navigate to quiz page
+    navigate(`/quiz/${quizId}`); // Navigate to quiz page
   };
 
   return (

@@ -17,9 +17,10 @@ export const loginUser = (userData) => API.post('/auth/login', userData);
 export const fetchDefaultQuizzes = () => API.get('/quizzes/default-quizzes');
 export const fetchCategories = () => API.get('/quizzes/categories');
 export const fetchAllQuizzes = () => API.get('/quizzes/all-quizzes');
-export const quizCreation = (userData) => API.post('/quizzes/create')
-// New API functions for quiz start and response submission
-export const endQuiz = (quizId, userData) => API.post(`/quizzes/${quizId}/end`, userData);
-export const startQuiz = (quizId, userData) => API.post(`/quizzes/${quizId}/start`, userData);
-export const submitResponse = (quizId, responseData) => API.post(`/quizzes/${quizId}/response`, responseData);
+export const quizCreation = (userData) => API.post('/quizzes/create');
+
+
 export const fetchQuizById = (quizId) => API.get(`/quizzes/${quizId}`);
+export const submitQuizResponses = (payload) => API.post('/quizzes/store-responses', payload);
+
+

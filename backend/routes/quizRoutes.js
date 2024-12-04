@@ -5,8 +5,8 @@ const {
   getCategories,
   fetchQuizById,
 } = require('../controllers/quizController');
+const {storeResponses} = require('../controllers/QuizStarter');
 const { createQuiz } = require('../controllers/quizCreation');
-const { startQuiz, submitResponse, endQuiz } = require('../controllers/QuizStarter');
 
 const router = express.Router();
 
@@ -20,19 +20,11 @@ router.get('/all-quizzes', getAllQuizzes);
 router.get('/categories', getCategories);
 
 // Fetch a quiz by ID
-router.get('/quiz/:id', fetchQuizById);
+router.get('/:id', fetchQuizById);
 
 // Create a quiz
 router.post('/create', createQuiz);
 
-// Start a quiz
-router.post('/start', startQuiz);
-
-// Submit a quiz response
-router.post('/submit', submitResponse);
-
-// End a quiz
-router.post('/end', endQuiz);
-
+router.post('/store-responses',storeResponses);
 module.exports = router;
 

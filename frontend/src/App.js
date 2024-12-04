@@ -8,7 +8,8 @@ import CreateQuiz from './pages/CreateQuiz';
 import QuizHistory from './pages/QuizHistory';
 import Leaderboard from './pages/Leaderboard';
 import PrivateRoute from './component/PrivateRoute'; // For protected routes
-
+import QuizPage from './pages/QuizPage';
+import QuizResults from './pages/QuizResults';
 
 const App = () => {
   return (
@@ -24,6 +25,8 @@ const App = () => {
         <Route path="/create" element={<PrivateRoute><CreateQuiz /></PrivateRoute>} />
         <Route path="/history" element={<PrivateRoute><QuizHistory /></PrivateRoute>} />
         <Route path="/leaderboard" element={<PrivateRoute><Leaderboard /></PrivateRoute>} />
+        <Route path="/quiz/:quizId" element={<QuizPage />} />
+        <Route path="/quiz/results" element={<QuizResults />} />
 
 
 
