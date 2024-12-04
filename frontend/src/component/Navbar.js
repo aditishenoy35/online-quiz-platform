@@ -92,13 +92,14 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
       </List>
 
       {/* Spacer for social links */}
-      <Box sx={{ marginTop: 'auto', display: isSidebarOpen ? 'flex' : 'none' }}>
-        <IconButton href="https://instagram.com" sx={{ color: 'white' }}><InstagramIcon /></IconButton>
-        <IconButton href="https://facebook.com" sx={{ color: 'white' }}><FacebookIcon /></IconButton>
-        <IconButton href="mailto:example@gmail.com" sx={{ color: 'white' }}><GmailIcon /></IconButton>
-        <IconButton href="https://twitter.com" sx={{ color: 'white' }}><TwitterIcon /></IconButton>
-        <IconButton href="tel:+1234567890" sx={{ color: 'white' }}><PhoneIcon /></IconButton>
+      <Box sx={{ marginTop: '150px', display: isSidebarOpen ? 'flex' : 'none' }}>
+         <IconButton href="https://instagram.com" sx={{ color: 'white' }}><InstagramIcon /></IconButton>
+         <IconButton href="https://facebook.com" sx={{ color: 'white' }}><FacebookIcon /></IconButton>
+         <IconButton href="mailto:example@gmail.com" sx={{ color: 'white' }}><GmailIcon /></IconButton>
+         <IconButton href="https://twitter.com" sx={{ color: 'white' }}><TwitterIcon /></IconButton>
+         <IconButton href="tel:+1234567890" sx={{ color: 'white' }}><PhoneIcon /></IconButton>
       </Box>
+
 
       {/* Logout Confirmation Dialog */}
       <Dialog open={isLogoutDialogOpen} onClose={handleLogoutCancel}>

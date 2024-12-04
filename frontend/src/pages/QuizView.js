@@ -42,7 +42,7 @@ const QuizView = () => {
   };
 
   return (
-    <div style={{ display: 'flex', height: '100vh', margin: 0 }}>
+    <div style={{ display: 'flex', height: '100vh', overflow: 'hidden', margin: 0 }}>
       {/* Sidebar (Navbar) */}
       <Navbar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
 
@@ -51,10 +51,9 @@ const QuizView = () => {
         style={{
           flex: 1,
           backgroundColor: '#f4f4f9',
-          marginLeft: isSidebarOpen ? '0px' : '0px', // Adjust margin based on sidebar state
           paddingTop: '0', // Ensure no padding at the top
           overflowY: 'auto', // Allow scrolling
-          transition: 'margin-left 0.3s ease', // Smooth transition for margin
+          overflowX: 'hidden', // Prevent horizontal scrolling
         }}
       >
         {/* Header Component */}
