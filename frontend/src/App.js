@@ -9,6 +9,7 @@ import QuizHistory from './pages/QuizHistory';
 import Leaderboard from './pages/Leaderboard';
 import PrivateRoute from './component/PrivateRoute'; // For protected routes
 
+
 const App = () => {
   return (
     <Router>
@@ -23,6 +24,8 @@ const App = () => {
         <Route path="/create" element={<PrivateRoute><CreateQuiz /></PrivateRoute>} />
         <Route path="/history" element={<PrivateRoute><QuizHistory /></PrivateRoute>} />
         <Route path="/leaderboard" element={<PrivateRoute><Leaderboard /></PrivateRoute>} />
+
+
 
         {/* Catch-all route */}
         <Route path="*" element={<Home />} />

@@ -28,6 +28,7 @@ connectDB();
 app.use('/api/quizzes',quizRoutes)
 app.use('/api/auth', auth);
 
+
 // Basic Route
 app.get('/', (req, res) => {
   res.send('Quiz App Backend is Running!');

@@ -2,15 +2,15 @@ import React, { useEffect, useState } from 'react';
 import QuizFilters from '../component/QuizFilters';  // Assuming QuizFilter is correctly imported
 import { fetchAllQuizzes } from '../api';  // Assuming you've already saved the API function in api.js
 import Navbar from '../component/Navbar'; // Import the Navbar component
-import '../styles/Dashboard.css'
+import '../styles/Dashboard.css';
+import { useNavigate } from 'react-router-dom';
 
 const QuizView = () => {
-  // State for quizzes, difficulty, category, and filtered quizzes
   const [quizzes, setQuizzes] = useState([]);
   const [difficulty, setDifficulty] = useState('');
   const [category, setCategory] = useState('');
+  const navigate = useNavigate();
 
-  // Fetch and filter quizzes on component mount and when filters change
   useEffect(() => {
     const fetchAndFilterQuizzes = async () => {
       try {
@@ -26,14 +26,18 @@ const QuizView = () => {
           filtered = filtered.filter((quiz) => quiz.category === category);
         }
 
-        setQuizzes(filtered);  // Set the filtered quizzes directly
+        setQuizzes(filtered);
       } catch (error) {
         console.error('Error fetching quizzes:', error);
       }
     };
 
     fetchAndFilterQuizzes();
-  }, [difficulty, category]);  // Re-run when filters change
+  }, [difficulty, category]);
+
+  const handleStartClick = (quizId) => {
+    navigate(`#`);
+  };
 
   return (
     <div style={{ display: 'flex' }}>
@@ -49,17 +53,20 @@ const QuizView = () => {
           category={category}
           setCategory={setCategory}
         />
-
         <div className="quiz-list">
           {quizzes.length > 0 ? (
             quizzes.map((quiz) => (
               <div key={quiz._id} className="quiz-card">
-                
-                <h2 className='header'>{quiz.title}</h2>
+                <h2 className="header">{quiz.title}</h2>
                 <p>Category: {quiz.category}</p>
                 <p>Difficulty: {quiz.difficulty}</p>
                 <p>{quiz.description}</p>
-                {/* Add more details or functionality as needed */}
+                <button
+                  onClick={() => handleStartClick(quiz._id)}  // Start button click
+                  className="btn-start-quiz"
+                >
+                  Start Quiz
+                </button>
               </div>
             ))
           ) : (
