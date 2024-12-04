@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import Navbar from '../component/Navbar';
 import { quizCreation } from '../api';
+import '../styles/Dashboard.css';
 
 const CreateQuiz = () => {
   const [quizTitle, setQuizTitle] = useState("Default Quiz Title");
   const [category, setCategory] = useState("General Knowledge");
   const [difficulty, setDifficulty] = useState("easy");
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [questions, setQuestions] = useState([
     {
       questionText: '',
@@ -51,9 +53,16 @@ const CreateQuiz = () => {
   };
 
   return (
-    <div style={{ display: 'flex' }}>
-      <Navbar />
-      <div style={{ padding: '20px', flex: 1 }}>
+    <div style={{ display: 'flex', height: '100vh', margin: 0  }}>
+      <Navbar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
+      <div style={{
+          flex: 1,
+          backgroundColor: '#f4f4f9',
+          marginLeft: isSidebarOpen ? '0px' : '0px', // Adjust margin based on sidebar state
+          paddingTop: '0', // Ensure no padding at the top
+          overflowY: 'auto', // Allow scrolling
+          transition: 'margin-left 0.3s ease', // Smooth transition for margin
+        }}>
         <h2>Create Your Own Quiz!</h2>
         <form>
           <div style={{ marginBottom: '20px' }}>

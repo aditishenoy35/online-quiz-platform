@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
 import { Box, List, ListItem, ListItemText, IconButton } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
 import CreateIcon from '@mui/icons-material/Create';
@@ -13,9 +12,7 @@ import GmailIcon from '@mui/icons-material/Email';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import PhoneIcon from '@mui/icons-material/Phone';
 
-const Navbar = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Sidebar starts as collapsed (false)
-
+const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen); // Toggle between open and closed sidebar
   };
@@ -23,15 +20,18 @@ const Navbar = () => {
   return (
     <Box
       sx={{
-        width: isSidebarOpen ? '200px' : '60px', // Adjust width based on sidebar state
-        height: '100vh',
+        top: 0,
+        left: 0,
+        height: '100vh',  // Full height of the viewport
+        width: isSidebarOpen ? '200px' : '60px',  // Adjust the width based on sidebar state
         background: '#2c3e50',
         color: 'white',
         padding: '20px',
         boxShadow: '2px 0 5px rgba(0, 0, 0, 0.1)',
         display: 'flex',
-        flexDirection: 'column', // Column layout for stacking items
-        transition: 'width 0.3s ease', // Smooth transition for opening/closing
+        flexDirection: 'column', // Stack items vertically
+        transition: 'width 0.3s ease',
+        zIndex: 1000,
       }}
     >
       {/* Menu Icon for Mobile */}
@@ -45,45 +45,34 @@ const Navbar = () => {
       </h2>
       
       <List>
-        <ListItem button component={Link} to="/quizzes" sx={{ display: 'flex', alignItems: 'center' }}>
+        <ListItem button component="a" href="/quizzes">
           <HomeIcon sx={{ marginRight: isSidebarOpen ? '10px' : '0px', fontSize: '20px', color: 'white' }} />
           {isSidebarOpen && <ListItemText primary="View Quizzes" sx={{ color: 'white', marginLeft: '10px', fontSize: '14px' }} />}
         </ListItem>
 
-        <ListItem button component={Link} to="/create" sx={{ display: 'flex', alignItems: 'center' }}>
+        <ListItem button component="a" href="/create">
           <CreateIcon sx={{ marginRight: isSidebarOpen ? '10px' : '0px', fontSize: '20px', color: 'white' }} />
           {isSidebarOpen && <ListItemText primary="Create Quiz" sx={{ color: 'white', marginLeft: '10px', fontSize: '14px' }} />}
         </ListItem>
 
-        <ListItem button component={Link} to="/history" sx={{ display: 'flex', alignItems: 'center' }}>
+        <ListItem button component="a" href="/history">
           <HistoryIcon sx={{ marginRight: isSidebarOpen ? '10px' : '0px', fontSize: '20px', color: 'white' }} />
           {isSidebarOpen && <ListItemText primary="Quiz History" sx={{ color: 'white', marginLeft: '10px', fontSize: '14px' }} />}
         </ListItem>
 
-        <ListItem button component={Link} to="/leaderboard" sx={{ display: 'flex', alignItems: 'center' }}>
+        <ListItem button component="a" href="/leaderboard">
           <LeaderboardIcon sx={{ marginRight: isSidebarOpen ? '10px' : '0px', fontSize: '20px', color: 'white' }} />
           {isSidebarOpen && <ListItemText primary="Leaderboard" sx={{ color: 'white', marginLeft: '10px', fontSize: '14px' }} />}
         </ListItem>
       </List>
 
-      {/* Spacer between Page Icons and Contact Icons */}
-      <Box sx={{ marginTop: 'auto', display: 'flex', justifyContent: 'space-between', paddingTop: '20px' }}>
-        {/* Row of contact icons at the bottom */}
-        <IconButton component="a" href="https://instagram.com" target="_blank" sx={{ color: 'white', fontSize: '18px' }}>
-          <InstagramIcon />
-        </IconButton>
-        <IconButton component="a" href="https://facebook.com" target="_blank" sx={{ color: 'white', fontSize: '18px' }}>
-          <FacebookIcon />
-        </IconButton>
-        <IconButton component="a" href="mailto:example@gmail.com" target="_blank" sx={{ color: 'white', fontSize: '18px' }}>
-          <GmailIcon />
-        </IconButton>
-        <IconButton component="a" href="https://twitter.com" target="_blank" sx={{ color: 'white', fontSize: '18px' }}>
-          <TwitterIcon />
-        </IconButton>
-        <IconButton component="a" href="tel:+1234567890" sx={{ color: 'white', fontSize: '18px' }}>
-          <PhoneIcon />
-        </IconButton>
+      {/* Spacer for social links */}
+      <Box sx={{ marginTop: 'auto', display: isSidebarOpen ? 'flex' : 'none' }}>
+        <IconButton href="https://instagram.com" sx={{ color: 'white' }}><InstagramIcon /></IconButton>
+        <IconButton href="https://facebook.com" sx={{ color: 'white' }}><FacebookIcon /></IconButton>
+        <IconButton href="mailto:example@gmail.com" sx={{ color: 'white' }}><GmailIcon /></IconButton>
+        <IconButton href="https://twitter.com" sx={{ color: 'white' }}><TwitterIcon /></IconButton>
+        <IconButton href="tel:+1234567890" sx={{ color: 'white' }}><PhoneIcon /></IconButton>
       </Box>
     </Box>
   );

@@ -10,6 +10,7 @@ const QuizView = () => {
   const [quizzes, setQuizzes] = useState([]);
   const [difficulty, setDifficulty] = useState('');
   const [category, setCategory] = useState('');
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Track sidebar open state
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -37,16 +38,25 @@ const QuizView = () => {
   }, [difficulty, category]);
 
   const handleStartClick = (quizId) => {
-    navigate(`#`);
+    navigate(`#`); // Navigate to quiz page
   };
 
   return (
-    <div style={{ display: 'flex' }}>
+    <div style={{ display: 'flex', height: '100vh', margin: 0 }}>
       {/* Sidebar (Navbar) */}
-      <Navbar />
+      <Navbar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
 
       {/* Content Area */}
-      <div style={{ flex: 1, backgroundColor: '#f4f4f9' }}>
+      <div
+        style={{
+          flex: 1,
+          backgroundColor: '#f4f4f9',
+          marginLeft: isSidebarOpen ? '0px' : '0px', // Adjust margin based on sidebar state
+          paddingTop: '0', // Ensure no padding at the top
+          overflowY: 'auto', // Allow scrolling
+          transition: 'margin-left 0.3s ease', // Smooth transition for margin
+        }}
+      >
         {/* Header Component */}
         <Header />
 
