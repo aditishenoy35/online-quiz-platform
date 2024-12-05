@@ -31,7 +31,7 @@
   .btn-start-quiz {
     display: inline-block;
     padding: 10px 20px;
-    background-color: #1e3a8a; /* Dark blue color */
+    background-color: #2c3e50 ; /* Dark blue color */
     color: white;
     border: none;
     border-radius: 4px;
@@ -40,9 +40,13 @@
     margin-top: 15px; /* Space between quiz description and button */
     text-align: center;
     text-decoration: none;
+    transition: opacity 0.15s;
   }
   
   .btn-start-quiz:hover {
-    background-color: #1e40af; /* Slightly darker blue on hover */
+    opacity: 0.7s;/* Slightly darker blue on hover */
+  }
+  .btn-stat-quiz:active{
+    opacity: 0.4s;
   }
   
