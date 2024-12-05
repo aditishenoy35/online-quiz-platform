@@ -1,0 +1,232 @@
+/* Sidebar (Navbar) Styling: Only affects CreateQuiz page */
+.create-quiz-page .navbar {
+    width: 250px;
+    height: 100vh;
+    background-color: #007bff;
+    position: fixed;
+    top: 0;
+    left: 0;
+    color: white;
+    z-index: 1000;
+    overflow-y: auto; /* Scrolling within the sidebar */
+    padding: 20px;
+}
+
+/* Sidebar links */
+.create-quiz-page .navbar a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    display: block;
+    font-size: 1.2rem;
+}
+
+.create-quiz-page .navbar a:hover {
+    background-color: #215893;
+    border-radius: 4px;
+}
+
+/* Main content of CreateQuiz page */
+.create-quiz-content {
+    margin-left: 90px; /* Offset content to the right to make room for the sidebar */
+    padding: 40px;
+    width: 80%;
+    background-color: #ffff;
+    border-radius: 10px;
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+
+/* Styling for the form container */
+.create-quiz-content h2 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+/* Styling for form inputs */
+.create-quiz-content .form-group input,
+.create-quiz-content .form-group select {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 1rem;
+}
+
+/* Styling for buttons */
+.create-quiz-content button {
+    padding: 12px 24px;
+    font-size: 1rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.create-quiz-content button:hover {
+    background-color: #0056b3;
+}
+
+/* Styling for the question groups */
+.create-quiz-content .questions-container {
+    margin-top: 30px;
+}
+
+.create-quiz-content .questions-container h3 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+
+.create-quiz-content .question-group {
+    margin-bottom: 30px;
+}
+
+.create-quiz-content .question-group label {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.create-quiz-content .question-group input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+.create-quiz-content .options-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.create-quiz-content .options-row .option-item {
+    width: 23%;
+}
+
+.create-quiz-content .option-item input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+/* Styling for dropdowns (select elements) */
+.create-quiz-content select {
+    padding: 12px;
+    width: 100%;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+/* Add Question button styling */
+.create-quiz-content button[type="button"] {
+    background-color: #28a745;
+}
+
+.create-quiz-content button[type="button"]:hover {
+    background-color: #218838;
+}
+
+/* Styling for the correct answer dropdown */
+.create-quiz-content .correct-answer-container {
+    margin-top: 20px;
+}
+
+.create-quiz-content .correct-answer-container select {
+    padding: 12px;
+    width: 100%;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+/* Make the page responsive */
+@media (max-width: 768px) {
+    .create-quiz-page .navbar {
+        width: 200px;
+    }
+
+    .create-quiz-content {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .create-quiz-content .questions-container {
+        padding: 10px;
+    }
+
+    .create-quiz-content button {
+        width: 100%;
+    }
+
+    .create-quiz-content .options-row {
+        display: flex;
+        flex-wrap: wrap; /* Allow wrapping to next line */
+        justify-content: space-between; /* Distribute space evenly */
+        gap: 10px; /* Add space between options */
+    }
+    
+    .create-quiz-content .options-row .option-item {
+        width: 48%; /* Make each option take half of the row width */
+    }
+    
+}
+.button-row {
+    display: flex;
+    justify-content: space-between; /* Space between buttons */
+    align-items: center; /* Align vertically */
+    margin-top: 20px;
+}
+
+.add-question {
+    background-color: #28a745;
+}
+
+.save-quiz {
+    background-color: #007bff;
+    margin-left: auto; /* Push Save Quiz to the right */
+}
+
+.add-question:hover {
+    background-color: #218838;
+}
+
+.save-quiz:hover {
+    background-color: #0056b3;
+}
+.option-container {
+    display: flex; /* Arrange the options in a single line */
+    justify-content: center; /* Center the content */
+    gap: 10px; /* Adjust the gap between options */
+}
+
+.option {
+    margin: 0; /* Remove unnecessary margins */
+    padding: 5px; /* Add consistent padding */
+}
+
+/* Make the labels bold */
+.create-quiz-content .form-group label {
+    font-weight: normal; /* Default state */
+}
+
+.create-quiz-content .form-group label[for="quizTitle"],
+.create-quiz-content .form-group label[for="description"],
+.create-quiz-content .form-group label[for="category"],
+.create-quiz-content .form-group label[for="difficulty"] {
+    font-weight: bold; /* Make these labels bold */
+}
+.create-quiz-content h2 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 30px;
+    text-align: center; /* Center the text */
+}
