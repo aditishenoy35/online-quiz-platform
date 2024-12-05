@@ -25,10 +25,21 @@ router.post('/create', createQuiz);
 router.get('/:id', fetchQuizById);
 
 // Create a quiz
-router.get('/createhistory/:userId', getCreatedQuizzesHistory)
-router.get('/answerhistory/:userId',getAnsweredQuizzesHistory)
+/*router.get('/createhistory', getCreatedQuizzesHistory)
+router.get('/answerhistory',getAnsweredQuizzesHistory)*/
+router.get('/created/:userId', (req, res) => {
+  const userId = req.params.userId;
+  const createdQuizzes = quizzes.filter((quiz) => quiz.creator === userId);
+  res.json(createdQuizzes);
+});
 
 router.get('/getresults/:responseId',getQuizResults);
+router.get('/answered/:userId', (req, res) => {
+  const userId = req.params.userId;
+  const answeredQuizzes = responses.filter((response) => response.quiz.creator === userId);
+  res.json(answeredQuizzes);
+}
+);
 router.post('/store-responses',storeResponses);
 module.exports = router;
 
