@@ -4,12 +4,11 @@ import { getCreatedQuizzesHistory, getAnsweredQuizzesHistory } from '../api';
 
 const QuizHistory = () => {
   const userId = localStorage.getItem('userId'); // User ID from local storage
-  const [createdQuizzes, setCreatedQuizzes] = useState([]);
+  const [createdQuizzes, setCreatedQuizzes] = useState([]); 
   const [answeredQuizzes, setAnsweredQuizzes] = useState([]);
   const [error, setError] = useState('');
 
   useEffect(() => {
-    console.log('Fetched userId:', userId); // Log the fetched userId
     if (!userId) {
       setError('User ID is missing.');
       return;
@@ -22,26 +21,27 @@ const QuizHistory = () => {
           getCreatedQuizzesHistory(userId),
           getAnsweredQuizzesHistory(userId),
         ]);
-        console.log('Created quizzes:', created.data); // Log created quizzes
-        console.log('Answered quizzes:', answered.data); // Log answered quizzes
+        console.log('Fetched Created Quizzes:', created.data);
+        console.log('Fetched Answered Quizzes:', answered.data);
 
-        setCreatedQuizzes(created.data);
-        setAnsweredQuizzes(answered.data);
+        setCreatedQuizzes(created.data || []); // Handle cases where data might be undefined
+        setAnsweredQuizzes(answered.data || []);
       } catch (err) {
-        console.error('Error fetching quiz histories:', err); // Log any errors
-        setError('Error fetching quiz histories.');
+        console.error('Error fetching quiz histories:', err);
+        setError('Error fetching quiz histories. Please try again later.');
       }
     };
 
     fetchHistories();
   }, [userId]);
 
+  // Optional: Log updated states
   useEffect(() => {
-    console.log('Updated created quizzes:', createdQuizzes); // Log updates to createdQuizzes
+    console.log('Updated Created Quizzes:', createdQuizzes);
   }, [createdQuizzes]);
 
   useEffect(() => {
-    console.log('Updated answered quizzes:', answeredQuizzes); // Log updates to answeredQuizzes
+    console.log('Updated Answered Quizzes:', answeredQuizzes);
   }, [answeredQuizzes]);
 
   return (
@@ -52,38 +52,36 @@ const QuizHistory = () => {
         {error && <p style={{ color: 'red' }}>{error}</p>}
 
         <h3>Created Quizzes</h3>
-        {console.log('Rendering created quizzes:', createdQuizzes)} {/* Log while rendering */}
         <ul>
           {createdQuizzes.length > 0 ? (
-            createdQuizzes.map((response) => (
-              <li key={response._id}>
-                <h4>{response.quiz.title}</h4>
-                <p>{response.quiz.description}</p>
-                <p>Category: {response.quiz.category}</p>
-                <p>Difficulty: {response.quiz.difficulty}</p>
-                <p>Score: {response.score}</p>
-                <p>Submitted on: {new Date(response.submittedAt).toLocaleDateString()}</p>
+            createdQuizzes.map((quiz) => (
+              <li key={quiz._id}>
+                <h4>{quiz.quiz.title}</h4>
+                <p>{quiz.quiz.description}</p>
+                <p>Category: {quiz.quiz.category}</p>
+                <p>Difficulty: {quiz.quiz.difficulty}</p>
+                <p>Score: {quiz.score}</p>
+                <p>Submitted on: {new Date(quiz.submittedAt).toLocaleDateString()}</p>
               </li>
-            ))    
+            ))
           ) : (
             <p>No created quizzes found.</p>
           )}
         </ul>
 
         <h3>Answered Quizzes</h3>
-        {console.log('Rendering answered quizzes:', answeredQuizzes)} {/* Log while rendering */}
         <ul>
           {answeredQuizzes.length > 0 ? (
-           answeredQuizzes.map((response) => (
-            <li key={response._id}>
-              <h4>{response.quiz.title}</h4>
-              <p>{response.quiz.description}</p>
-              <p>Category: {response.quiz.category}</p>
-              <p>Difficulty: {response.quiz.difficulty}</p>
-              <p>Score: {response.score}</p>
-              <p>Submitted on: {new Date(response.submittedAt).toLocaleDateString()}</p>
-            </li>
-          ))
+            answeredQuizzes.map((quiz) => (
+              <li key={quiz._id}>
+                <h4>{quiz.quiz.title}</h4>
+                <p>{quiz.quiz.description}</p>
+                <p>Category: {quiz.quiz.category}</p>
+                <p>Difficulty: {quiz.quiz.difficulty}</p>
+                <p>Score: {quiz.score}</p>
+                <p>Submitted on: {new Date(quiz.submittedAt).toLocaleDateString()}</p>
+              </li>
+            ))
           ) : (
             <p>No answered quizzes found.</p>
           )}
