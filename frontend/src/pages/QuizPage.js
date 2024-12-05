@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { fetchQuizById, submitQuizResponses } from '../api';
 import Question from '../component/Question';
 import QuestionTimer from '../component/QuestionTimer';
 import '../styles/Start.css'; // Import CSS for styling
+
 
 const QuizPage = () => {
   const [quiz, setQuiz] = useState(null);
@@ -11,6 +12,9 @@ const QuizPage = () => {
   const [responses, setResponses] = useState([]);
   const navigate = useNavigate();
   const { quizId } = useParams();
+  const location = useLocation();
+  const timePerQuestion = location.state?.timePerQuestion || 30;
+
 
   // Fetch quiz details when the component mounts
   useEffect(() => {
@@ -78,7 +82,7 @@ const QuizPage = () => {
   return (
     <div className="quiz-container">
       <h2 className="quiz-title">{quiz.title}</h2>
-      <QuestionTimer onTimeUp={handleNextQuestion} resetKey={currentQuestion} />
+      <QuestionTimer onTimeUp={handleNextQuestion} resetKey={currentQuestion} initialTime={timePerQuestion}/>
       <div className="question-box">
         <Question
           question={quiz.questions[currentQuestion]}

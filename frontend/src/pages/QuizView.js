@@ -4,12 +4,14 @@ import { fetchAllQuizzes } from '../api';
 import Navbar from '../component/Navbar';
 import Header from '../component/Header'; // Import the Header component
 import '../styles/Dashboard.css';
+import QuizDetails from '../component/QuizDetails';
 import { useNavigate } from 'react-router-dom';
 
 const QuizView = () => {
   const [quizzes, setQuizzes] = useState([]);
   const [difficulty, setDifficulty] = useState('');
   const [category, setCategory] = useState('');
+  const [selectedQuiz, setSelectedQuiz] = useState(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Track sidebar open state
   const navigate = useNavigate();
 
@@ -37,8 +39,12 @@ const QuizView = () => {
     fetchAndFilterQuizzes();
   }, [difficulty, category]);
 
-  const handleStartClick = (quizId) => {
-    navigate(`/quiz/${quizId}`); // Navigate to quiz page
+  const handleStartClick = (quiz) => {
+    setSelectedQuiz(quiz); // Set the selected quiz
+  };
+
+  const handleProceed = (timePerQuestion) => {
+    navigate(`/quiz/${selectedQuiz._id}`, { state: { timePerQuestion } }); // Pass time to the quiz page
   };
 
   return (
@@ -77,7 +83,7 @@ const QuizView = () => {
                   <p>Difficulty: {quiz.difficulty}</p>
                   <p>{quiz.description}</p>
                   <button
-                    onClick={() => handleStartClick(quiz._id)} // Start button click
+                    onClick={() => handleStartClick(quiz)} // Open QuizDetails modal
                     className="btn-start-quiz"
                   >
                     Start Quiz
@@ -90,6 +96,13 @@ const QuizView = () => {
           </div>
         </div>
       </div>
+        {selectedQuiz && (
+          <QuizDetails
+            quiz={selectedQuiz}
+            onClose={() => setSelectedQuiz(null)} // Close modal
+            onProceed={handleProceed} // Navigate to quiz page with time
+          />
+        )}
     </div>
   );
 };

@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/Start.css'; // Import CSS for styling
 
-const QuestionTimer = ({ onTimeUp, resetKey }) => {
+const QuestionTimer = ({ onTimeUp, resetKey, initialTime }) => {
   const [timeLeft, setTimeLeft] = useState(30);
 
   // Reset timer whenever resetKey changes
   useEffect(() => {
-    setTimeLeft(30); // Reset the timer to 30 seconds
-  }, [resetKey]);
+    setTimeLeft(initialTime);
+  }, [resetKey, initialTime]);
 
   // Countdown logic
   useEffect(() => {
