@@ -56,10 +56,10 @@ const QuizHistory = () => {
           {createdQuizzes.length > 0 ? (
             createdQuizzes.map((quiz) => (
               <li key={quiz._id}>
-                <h4>{quiz.quiz.title}</h4>
-                <p>{quiz.quiz.description}</p>
-                <p>Category: {quiz.quiz.category}</p>
-                <p>Difficulty: {quiz.quiz.difficulty}</p>
+                <h4>{quiz.title}</h4>
+                <p>{quiz.description}</p>
+                <p>Category: {quiz.category}</p>
+                <p>Difficulty: {quiz.difficulty}</p>
                 <p>Score: {quiz.score}</p>
                 <p>Submitted on: {new Date(quiz.submittedAt).toLocaleDateString()}</p>
               </li>
@@ -74,10 +74,10 @@ const QuizHistory = () => {
           {answeredQuizzes.length > 0 ? (
             answeredQuizzes.map((quiz) => (
               <li key={quiz._id}>
-                <h4>{quiz.quiz.title}</h4>
-                <p>{quiz.quiz.description}</p>
-                <p>Category: {quiz.quiz.category}</p>
-                <p>Difficulty: {quiz.quiz.difficulty}</p>
+                <h4>{quiz.title}</h4>
+                <p>{quiz.description}</p>
+                <p>Category: {quiz.category}</p>
+                <p>Difficulty: {quiz.difficulty}</p>
                 <p>Score: {quiz.score}</p>
                 <p>Submitted on: {new Date(quiz.submittedAt).toLocaleDateString()}</p>
               </li>
