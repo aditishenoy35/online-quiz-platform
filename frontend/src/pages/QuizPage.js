@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams} from 'react-router-dom';
-import { fetchQuizById, submitQuizResponses } from '../api';  // Import the API function
+import { useNavigate, useParams } from 'react-router-dom';
+import { fetchQuizById, submitQuizResponses } from '../api';
 import Question from '../component/Question';
 import QuestionTimer from '../component/QuestionTimer';
+import '../styles/Start.css'; // Import CSS for styling
 
 const QuizPage = () => {
   const [quiz, setQuiz] = useState(null);
@@ -11,11 +12,11 @@ const QuizPage = () => {
   const navigate = useNavigate();
   const { quizId } = useParams();
 
-  // Fetch quiz details when component mounts
+  // Fetch quiz details when the component mounts
   useEffect(() => {
     const getQuiz = async () => {
       try {
-        const response = await fetchQuizById(quizId); // Using the API function
+        const response = await fetchQuizById(quizId);
         setQuiz(response.data); // Assuming the response contains the quiz data
       } catch (error) {
         console.error('Failed to fetch quiz:', error);
@@ -24,12 +25,12 @@ const QuizPage = () => {
     getQuiz();
   }, [quizId]);
 
-  // Handle next question transition
+  // Handle the transition to the next question
   const handleNextQuestion = () => {
     if (currentQuestion < quiz.questions.length - 1) {
-      setCurrentQuestion((prev) => prev + 1);
+      setCurrentQuestion((prev) => prev + 1); // Move to the next question
     } else {
-      submitQuiz();
+      submitQuiz(); // Submit quiz when all questions are answered
     }
   };
 
@@ -60,11 +61,9 @@ const QuizPage = () => {
         responses,
       };
 
-      const response = await submitQuizResponses(payload);  // Using the API function
-      console.log(response);
+      const response = await submitQuizResponses(payload);
       const result = response.data;
       if (response.status === 201) {
-        alert(`Quiz submitted! Your score: ${result.score}`);
         navigate('/quiz/results', { state: { score: result.score } });
       } else {
         alert(`Error: ${result.error}`);
@@ -77,14 +76,18 @@ const QuizPage = () => {
   if (!quiz) return <div>Loading quiz...</div>;
 
   return (
-    <div>
-      <h2>{quiz.title}</h2>
-      <QuestionTimer onTimeUp={handleNextQuestion} />
-      <Question
-        question={quiz.questions[currentQuestion]}
-        handleOptionChange={handleOptionChange}
-      />
-      <button onClick={handleNextQuestion}>Next</button>
+    <div className="quiz-container">
+      <h2 className="quiz-title">{quiz.title}</h2>
+      <QuestionTimer onTimeUp={handleNextQuestion} resetKey={currentQuestion} />
+      <div className="question-box">
+        <Question
+          question={quiz.questions[currentQuestion]}
+          handleOptionChange={handleOptionChange}
+        />
+      </div>
+      <button className="next-button" onClick={handleNextQuestion}>
+        {currentQuestion < quiz.questions.length - 1 ? 'Next' : 'Submit'}
+      </button>
     </div>
   );
 };

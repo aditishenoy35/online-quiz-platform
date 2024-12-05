@@ -29,7 +29,7 @@ exports.storeResponses = async (req, res) => {
       const isCorrect = question.options.some(
         (option) => option.text === response.selectedOption && option.isCorrect
       );
-      if (isCorrect) totalScore += 1; // Add to score for each correct answer
+      if (isCorrect) totalScore += 10; // Add to score for each correct answer
       return { ...response, isCorrect };
     });
 

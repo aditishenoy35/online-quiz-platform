@@ -1,0 +1,63 @@
+/* General Quiz Container Styling */
+.quiz-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 90%;
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+  }
+  
+  .quiz-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  /* Question Styling */
+  .question {
+    margin-bottom: 20px;
+  }
+  
+  .question-text {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  
+  .options {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .option {
+    margin-bottom: 10px;
+    font-size: 16px;
+  }
+  
+  /* Timer Styling */
+  .timer {
+    font-size: 18px;
+    font-weight: bold;
+    color: #ff5722;
+    margin-bottom: 20px;
+  }
+  
+  /* Button Styling */
+  .next-button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .next-button:hover {
+    background-color: #0056b3;
+  }
+  
