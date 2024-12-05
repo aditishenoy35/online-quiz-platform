@@ -5,7 +5,7 @@ const {
   getCategories,
   fetchQuizById,
 } = require('../controllers/quizController');
-const {storeResponses} = require('../controllers/QuizStarter');
+const {storeResponses, getQuizResults} = require('../controllers/QuizStarter');
 const { createQuiz } = require('../controllers/quizCreation');
 const { getCreatedQuizzesHistory, getAnsweredQuizzesHistory } = require('../controllers/quizhistory');
 const router = express.Router();
@@ -28,6 +28,7 @@ router.get('/:id', fetchQuizById);
 router.get('/createhistory/:userId', getCreatedQuizzesHistory)
 router.get('/answerhistory/:userId',getAnsweredQuizzesHistory)
 
+router.get('/getresults/:responseId',getQuizResults);
 router.post('/store-responses',storeResponses);
 module.exports = router;
 
