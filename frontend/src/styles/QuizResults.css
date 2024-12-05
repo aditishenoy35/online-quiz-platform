@@ -1,0 +1,114 @@
+/* Container styling */
+.quiz-results-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #2c3e50;
+    font-family: 'Roboto', sans-serif;
+    color: #1f2937;
+    padding: 20px;
+  }
+  
+  /* Card for results */
+  .quiz-results {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    width: 100%;
+    text-align: center;
+  }
+  
+  /* Title styling */
+  .quiz-results h2 {
+    font-size: 2.4rem;
+    font-weight: 500;
+    color: #111827;
+    margin-bottom: 5px;
+  }
+  
+  .thank-you {
+    font-size: 1.2rem;
+    color: #6b7280;
+    margin-bottom: 20px;
+  }
+  
+  /* Table styling for results */
+  .results-table {
+    width: 100%;
+    margin: 20px 0;
+    border-collapse: collapse;
+  }
+  
+  .results-table .label {
+    text-align: left;
+    padding: 10px 0;
+    font-size: 1.2rem;
+    color: #374151;
+  }
+  
+  .results-table .value {
+    text-align: right;
+    padding: 10px 0;
+    font-size: 1.2rem;
+    color: #2563eb;
+    font-weight: 500;
+  }
+  
+  /* Summary section */
+  .summary h3 {
+    font-size: 1.6rem;
+    color: #1e293b;
+    margin-top: 20px;
+  }
+  
+  .summary p {
+    font-size: 1.2rem;
+    margin: 10px 0;
+    color: #4b5563;
+  }
+  
+  .summary span {
+    font-weight: 500;
+    color: #10b981; /* Green for correct answers */
+  }
+
+  /* Red color for incorrect answers */
+  .summary .incorrect {
+    font-weight: 500;
+    color: #e74c3c; /* Red for incorrect answers */
+  }
+  
+  /* Button styling */
+  .actions {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+  }
+  
+  .actions button {
+    background: #2ecc71; /* Button color */
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1.1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .actions button:hover {
+    background: #27ae60;
+  }
+  
+  /* Loading and error states */
+  .quiz-loading,
+  .quiz-error {
+    font-size: 1.4rem;
+    color: #9ca3af;
+    margin-top: 20px;
+    font-style: italic;
+  }
