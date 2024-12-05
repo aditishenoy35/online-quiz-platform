@@ -1,0 +1,91 @@
+/* Overall container */
+.quiz-history-container {
+    display: flex;
+    height: 100vh;
+    overflow-y: auto;
+    margin: 0;
+    background-color: #f4f4f9;
+  }
+  
+  /* Content area */
+  .content {
+    flex: 1;
+    padding: 30px;
+    overflow-y: auto;
+  }
+  
+  /* Error message styling */
+  .error-message {
+    color: red;
+    font-size: 1rem;
+    margin-bottom: 20px;
+  }
+  
+  /* Section header */
+  .quiz-section h3 {
+    margin-bottom: 15px;
+    font-size: 1.5rem;
+    color: #333;
+    font-weight: bold;
+  }
+  
+  /* Divider between sections */
+  .divider {
+    border: 0;
+    height: 1px;
+    background-color: #ddd;
+    margin: 30px 0;
+  }
+  
+  /* Card container */
+  .card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+  
+  /* Quiz card styling */
+  .quiz-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: calc(33.333% - 20px); /* Three cards per row */
+    min-width: 300px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .quiz-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Card header (title) styling */
+  .quiz-card-header {
+    background-color: #4CAF50; /* Green background for title */
+    color: white;
+    padding: 15px;
+    border-radius: 8px 8px 0 0;
+  }
+  
+  .quiz-card-header h4 {
+    margin: 0;
+    font-size: 1.25rem;
+  }
+  
+  /* Card body styling */
+  .quiz-card-body {
+    padding: 15px;
+    color: #555;
+  }
+  
+  .quiz-card-body p {
+    margin: 10px 0;
+  }
+  
+  .quiz-card-body strong {
+    color: #333;
+  }
+  

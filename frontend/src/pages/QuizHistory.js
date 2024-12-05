@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from '../component/Navbar';
-import { getCreatedQuizzesHistory, getAnsweredQuizzesHistory } from '../api';
+import { getUserQuizHistory } from '../api';
+import '../styles/QuizHistory.css'; // Import the custom CSS for styling
 
 const QuizHistory = () => {
-  const userId = localStorage.getItem('userId'); // User ID from local storage
-  const [createdQuizzes, setCreatedQuizzes] = useState([]); 
-  const [answeredQuizzes, setAnsweredQuizzes] = useState([]);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const userId = localStorage.getItem('userId');
+  const [quizHistory, setQuizHistory] = useState({
+    createdQuizzes: [],
+    answeredQuizzes: [],
+  });
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -14,78 +18,81 @@ const QuizHistory = () => {
       return;
     }
 
-    const fetchHistories = async () => {
+    const fetchQuizHistory = async () => {
       try {
-        console.log('Fetching quiz histories...');
-        const [created, answered] = await Promise.all([
-          getCreatedQuizzesHistory(userId),
-          getAnsweredQuizzesHistory(userId),
-        ]);
-        console.log('Fetched Created Quizzes:', created.data);
-        console.log('Fetched Answered Quizzes:', answered.data);
-
-        setCreatedQuizzes(created.data || []); // Handle cases where data might be undefined
-        setAnsweredQuizzes(answered.data || []);
+        const response = await getUserQuizHistory(userId);
+        setQuizHistory({
+          createdQuizzes: response.data.createdQuizzes || [],
+          answeredQuizzes: response.data.answeredQuizzes || [],
+        });
       } catch (err) {
-        console.error('Error fetching quiz histories:', err);
-        setError('Error fetching quiz histories. Please try again later.');
+        console.error('Error fetching quiz history:', err);
+        setError('Error fetching quiz history. Please try again later.');
       }
     };
 
-    fetchHistories();
+    fetchQuizHistory();
   }, [userId]);
 
-  // Optional: Log updated states
-  useEffect(() => {
-    console.log('Updated Created Quizzes:', createdQuizzes);
-  }, [createdQuizzes]);
-
-  useEffect(() => {
-    console.log('Updated Answered Quizzes:', answeredQuizzes);
-  }, [answeredQuizzes]);
+  const { createdQuizzes, answeredQuizzes } = quizHistory;
 
   return (
-    <div style={{ display: 'flex' }}>
-      <Navbar />
-      <div style={{ padding: '20px', flex: 1 }}>
+    <div className="quiz-history-container">
+      <Navbar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
+
+      <div className="content">
         <h2>Quiz History</h2>
-        {error && <p style={{ color: 'red' }}>{error}</p>}
+        {error && <p className="error-message">{error}</p>}
 
-        <h3>Created Quizzes</h3>
-        <ul>
-          {createdQuizzes.length > 0 ? (
-            createdQuizzes.map((quiz) => (
-              <li key={quiz._id}>
-                <h4>{quiz.title}</h4>
-                <p>{quiz.description}</p>
-                <p>Category: {quiz.category}</p>
-                <p>Difficulty: {quiz.difficulty}</p>
-                <p>Score: {quiz.score}</p>
-                <p>Submitted on: {new Date(quiz.submittedAt).toLocaleDateString()}</p>
-              </li>
-            ))
-          ) : (
-            <p>No created quizzes found.</p>
-          )}
-        </ul>
+        {/* Created Quizzes Section */}
+        <section className="quiz-section">
+          <h3>Created Quizzes</h3>
+          <div className="card-container">
+            {createdQuizzes.length > 0 ? (
+              createdQuizzes.map((quiz) => (
+                <div className="quiz-card" key={quiz._id}>
+                  <div className="quiz-card-header">
+                    <h4>{quiz.title}</h4>
+                  </div>
+                  <div className="quiz-card-body">
+                    <p>{quiz.description}</p>
+                    <p><strong>Category:</strong> {quiz.category}</p>
+                    <p><strong>Difficulty:</strong> {quiz.difficulty}</p>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p>No created quizzes found.</p>
+            )}
+          </div>
+        </section>
 
-        <h3>Answered Quizzes</h3>
-        <ul>
-          {answeredQuizzes.length > 0 ? (
-            answeredQuizzes.map((quiz) => (
-              <li key={quiz._id}>
-                <h4>{quiz.title}</h4>
-                <p>{quiz.description}</p>
-                <p>Category: {quiz.category}</p>
-                <p>Difficulty: {quiz.difficulty}</p>
-                <p>Score: {quiz.score}</p>
-                <p>Submitted on: {new Date(quiz.submittedAt).toLocaleDateString()}</p>
-              </li>
-            ))
-          ) : (
-            <p>No answered quizzes found.</p>
-          )}
-        </ul>
+        <hr className="divider" /> {/* Divider between sections */}
+
+        {/* Answered Quizzes Section */}
+        <section className="quiz-section">
+          <h3>Answered Quizzes</h3>
+          <div className="card-container">
+            {answeredQuizzes.length > 0 ? (
+              answeredQuizzes.map((response) => (
+                <div className="quiz-card" key={response._id}>
+                  <div className="quiz-card-header">
+                    <h4>{response.quiz?.title}</h4>
+                  </div>
+                  <div className="quiz-card-body">
+                    <p>{response.quiz?.description}</p>
+                    <p><strong>Category:</strong> {response.quiz?.category}</p>
+                    <p><strong>Difficulty:</strong> {response.quiz?.difficulty}</p>
+                    <p><strong>Score:</strong> {response.score}</p>
+                    <p><strong>Submitted on:</strong> {response.submittedAt ? new Date(response.submittedAt).toLocaleDateString() : 'N/A'}</p>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p>No answered quizzes found.</p>
+            )}
+          </div>
+        </section>
       </div>
     </div>
   );
