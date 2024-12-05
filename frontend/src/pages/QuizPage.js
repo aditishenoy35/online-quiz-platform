@@ -66,7 +66,7 @@ const QuizPage = () => {
       const response = await submitQuizResponses(payload);
       const result = response.data;
       if (response.status === 201) {
-        navigate('/quiz/results', { state: { score: result.score } });
+        navigate('/quiz/results', { state: { score: result.score, responseId:result.responseId} });
       } else {
         alert(`Error: ${result.error}`);
       }

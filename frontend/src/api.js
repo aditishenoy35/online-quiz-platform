@@ -24,3 +24,4 @@ export const fetchQuizById = (quizId) => API.get(`/quizzes/${quizId}`);
 export const submitQuizResponses = (payload) => API.post('/quizzes/store-responses', payload);
 
 
+export const getQuizResults = (responseId) => API.get(`/quizzes/getresults/${responseId}`);
