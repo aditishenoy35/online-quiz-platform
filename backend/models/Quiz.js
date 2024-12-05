@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 const QuizSchema = new mongoose.Schema({
     title: { type: String, required: true },
-    description: { type: String },
+    description: { type: String, default:'' },
     category: { type: String },
     difficulty: { type: String, enum: ["Easy", "Medium", "Hard"] },
     questions: [

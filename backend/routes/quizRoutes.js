@@ -19,11 +19,13 @@ router.get('/all-quizzes', getAllQuizzes);
 // Fetch categories
 router.get('/categories', getCategories);
 
+router.post('/create', createQuiz);
+
 // Fetch a quiz by ID
 router.get('/:id', fetchQuizById);
 
 // Create a quiz
-router.post('/create', createQuiz);
+
 
 router.post('/store-responses',storeResponses);
 module.exports = router;

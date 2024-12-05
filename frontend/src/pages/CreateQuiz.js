@@ -5,8 +5,9 @@ import '../styles/Dashboard.css';
 
 const CreateQuiz = () => {
   const [quizTitle, setQuizTitle] = useState("Default Quiz Title");
+  const [description, setDescription] = useState("Default Description");
   const [category, setCategory] = useState("General Knowledge");
-  const [difficulty, setDifficulty] = useState("easy");
+  const [difficulty, setDifficulty] = useState("Easy");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [questions, setQuestions] = useState([
     {
@@ -15,6 +16,8 @@ const CreateQuiz = () => {
       correctAnswer: '',
     },
   ]);
+
+  const userId = localStorage.getItem('userId'); // Fetch user ID from localStorage
 
   const addQuestion = () => {
     setQuestions([
@@ -36,32 +39,48 @@ const CreateQuiz = () => {
   };
 
   const handleSaveQuiz = async () => {
+    if (!userId) {
+      alert('User ID not found. Please log in.');
+      return;
+    }
+
     try {
+      const formattedQuestions = questions.map((q) => ({
+        text: q.questionText,
+        options: q.options.map((optionText, index) => ({
+          text: optionText,
+          isCorrect: optionText === q.correctAnswer,
+        })),
+      }));
+
       const payload = {
         title: quizTitle,
+        description,
         category,
         difficulty,
-        questions,
+        questions: formattedQuestions,
+        createdBy: userId,
       };
+
       const response = await quizCreation(payload);
       console.log('Quiz saved successfully:', response.data);
-      alert('Quiz saved successfully!');
+      alert('Quiz created successfully!');
     } catch (error) {
       console.error('Error saving quiz:', error);
-      alert('Failed to save quiz. Please try again.');
+      alert('Failed to create quiz. Please try again.');
     }
   };
 
   return (
-    <div style={{ display: 'flex', height: '100vh', margin: 0  }}>
+    <div style={{ display: 'flex', height: '100vh', margin: 0 }}>
       <Navbar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
       <div style={{
           flex: 1,
           backgroundColor: '#f4f4f9',
-          marginLeft: isSidebarOpen ? '0px' : '0px', // Adjust margin based on sidebar state
-          paddingTop: '0', // Ensure no padding at the top
-          overflowY: 'auto', // Allow scrolling
-          transition: 'margin-left 0.3s ease', // Smooth transition for margin
+          marginLeft: isSidebarOpen ? '0px' : '0px',
+          paddingTop: '0',
+          overflowY: 'auto',
+          transition: 'margin-left 0.3s ease',
         }}>
         <h2>Create Your Own Quiz!</h2>
         <form>
@@ -72,6 +91,17 @@ const CreateQuiz = () => {
               id="quizTitle"
               value={quizTitle}
               onChange={(e) => setQuizTitle(e.target.value)}
+              style={{ marginLeft: '10px', padding: '5px' }}
+            />
+          </div>
+
+          <div style={{ marginBottom: '20px' }}>
+            <label htmlFor="description">Description:</label>
+            <input
+              type="text"
+              id="description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
               style={{ marginLeft: '10px', padding: '5px' }}
             />
           </div>
@@ -95,9 +125,9 @@ const CreateQuiz = () => {
               onChange={(e) => setDifficulty(e.target.value)}
               style={{ marginLeft: '10px', padding: '5px' }}
             >
-              <option value="easy">Easy</option>
-              <option value="medium">Medium</option>
-              <option value="hard">Hard</option>
+              <option value="Easy">Easy</option>
+              <option value="Medium">Medium</option>
+              <option value="Hard">Hard</option>
             </select>
           </div>
 

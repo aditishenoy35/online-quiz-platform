@@ -17,7 +17,7 @@ export const loginUser = (userData) => API.post('/auth/login', userData);
 export const fetchDefaultQuizzes = () => API.get('/quizzes/default-quizzes');
 export const fetchCategories = () => API.get('/quizzes/categories');
 export const fetchAllQuizzes = () => API.get('/quizzes/all-quizzes');
-export const quizCreation = (userData) => API.post('/quizzes/create');
+export const quizCreation = (userData) => API.post('/quizzes/create',userData);
 
 
 export const fetchQuizById = (quizId) => API.get(`/quizzes/${quizId}`);
