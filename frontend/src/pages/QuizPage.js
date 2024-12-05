@@ -5,7 +5,6 @@ import Question from '../component/Question';
 import QuestionTimer from '../component/QuestionTimer';
 import '../styles/Start.css'; // Import CSS for styling
 
-
 const QuizPage = () => {
   const [quiz, setQuiz] = useState(null);
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -14,7 +13,6 @@ const QuizPage = () => {
   const { quizId } = useParams();
   const location = useLocation();
   const timePerQuestion = location.state?.timePerQuestion || 30;
-
 
   // Fetch quiz details when the component mounts
   useEffect(() => {
@@ -80,18 +78,19 @@ const QuizPage = () => {
   if (!quiz) return <div>Loading quiz...</div>;
 
   return (
-    <div className="quiz-container">
-
-      <QuestionTimer onTimeUp={handleNextQuestion} resetKey={currentQuestion} initialTime={timePerQuestion}/>
-      <div className="question-box">
-        <Question
-          question={quiz.questions[currentQuestion]}
-          handleOptionChange={handleOptionChange}
-        />
+    <div className="page-container">
+      <div className="quiz-container">
+        <QuestionTimer onTimeUp={handleNextQuestion} resetKey={currentQuestion} initialTime={timePerQuestion} />
+        <div className="question-box">
+          <Question
+            question={quiz.questions[currentQuestion]}
+            handleOptionChange={handleOptionChange}
+          />
+        </div>
+        <button className="next-button" onClick={handleNextQuestion}>
+          {currentQuestion < quiz.questions.length - 1 ? 'Next' : 'Submit'}
+        </button>
       </div>
-      <button className="next-button" onClick={handleNextQuestion}>
-        {currentQuestion < quiz.questions.length - 1 ? 'Next' : 'Submit'}
-      </button>
     </div>
   );
 };
