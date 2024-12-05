@@ -81,7 +81,7 @@ const QuizPage = () => {
 
   return (
     <div className="quiz-container">
-      <h2 className="quiz-title">{quiz.title}</h2>
+
       <QuestionTimer onTimeUp={handleNextQuestion} resetKey={currentQuestion} initialTime={timePerQuestion}/>
       <div className="question-box">
         <Question
