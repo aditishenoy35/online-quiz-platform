@@ -2,18 +2,19 @@ import React, { useState } from 'react';
 import Navbar from '../component/Navbar';
 import { quizCreation } from '../api';
 import '../styles/Dashboard.css';
+import '../styles/CreateQuiz.css';
 
 const CreateQuiz = () => {
-  const [quizTitle, setQuizTitle] = useState("Default Quiz Title");
-  const [description, setDescription] = useState("Default Description");
-  const [category, setCategory] = useState("General Knowledge");
-  const [difficulty, setDifficulty] = useState("Easy");
+  const [quizTitle, setQuizTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [category, setCategory] = useState('');
+  const [difficulty, setDifficulty] = useState('Easy');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [questions, setQuestions] = useState([
     {
       questionText: '',
       options: ['', '', '', ''],
-      correctAnswer: '',
+      correctAnswer: '', // Store the option letter (A, B, C, or D)
     },
   ]);
 
@@ -47,9 +48,9 @@ const CreateQuiz = () => {
     try {
       const formattedQuestions = questions.map((q) => ({
         text: q.questionText,
-        options: q.options.map((optionText, index) => ({
+        options: q.options.map((optionText, i) => ({
           text: optionText,
-          isCorrect: optionText === q.correctAnswer,
+          isCorrect: i === parseInt(q.correctAnswer),
         })),
       }));
 
@@ -72,144 +73,151 @@ const CreateQuiz = () => {
   };
 
   return (
-    <div style={{ display: 'flex', height: '100vh', margin: 0 }}>
+    <div style={{ display: 'flex', height: '100vh', overflow: 'hidden', margin: 0 }}>
+      {/* Sidebar (Navbar) */}
       <Navbar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
-      <div style={{
+
+      {/* Content Area */}
+      <div
+        style={{
           flex: 1,
           backgroundColor: '#f4f4f9',
-          marginLeft: isSidebarOpen ? '0px' : '0px',
           paddingTop: '0',
           overflowY: 'auto',
-          transition: 'margin-left 0.3s ease',
-        }}>
-        <h2>Create Your Own Quiz!</h2>
-        <form>
-          <div style={{ marginBottom: '20px' }}>
-            <label htmlFor="quizTitle">Quiz Title:</label>
-            <input
-              type="text"
-              id="quizTitle"
-              value={quizTitle}
-              onChange={(e) => setQuizTitle(e.target.value)}
-              style={{ marginLeft: '10px', padding: '5px' }}
-            />
-          </div>
+          overflowX: 'hidden',
+        }}
+      >
+        <div className="create-quiz-content">
+          <h2>Create Your Own Quiz!</h2>
+          <form>
+            <div className="form-group">
+              <label htmlFor="quizTitle">Quiz Title:</label>
+              <input
+                type="text"
+                id="quizTitle"
+                value={quizTitle}
+                onChange={(e) => setQuizTitle(e.target.value)}
+                placeholder="Enter your quiz title here"
+              />
+            </div>
 
-          <div style={{ marginBottom: '20px' }}>
-            <label htmlFor="description">Description:</label>
-            <input
-              type="text"
-              id="description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              style={{ marginLeft: '10px', padding: '5px' }}
-            />
-          </div>
+            <div className="form-group">
+              <label htmlFor="description">Description:</label>
+              <input
+                type="text"
+                id="description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="Enter a description for your quiz"
+              />
+            </div>
 
-          <div style={{ marginBottom: '20px' }}>
-            <label htmlFor="category">Category:</label>
-            <input
-              type="text"
-              id="category"
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              style={{ marginLeft: '10px', padding: '5px' }}
-            />
-          </div>
+            <div className="form-group">
+              <label htmlFor="category">Category:</label>
+              <input
+                type="text"
+                id="category"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                placeholder="Enter quiz category (e.g., General Knowledge)"
+              />
+            </div>
 
-          <div style={{ marginBottom: '20px' }}>
-            <label htmlFor="difficulty">Difficulty:</label>
-            <select
-              id="difficulty"
-              value={difficulty}
-              onChange={(e) => setDifficulty(e.target.value)}
-              style={{ marginLeft: '10px', padding: '5px' }}
-            >
-              <option value="Easy">Easy</option>
-              <option value="Medium">Medium</option>
-              <option value="Hard">Hard</option>
-            </select>
-          </div>
+            <div className="form-group">
+              <label htmlFor="difficulty">Difficulty:</label>
+              <select
+                id="difficulty"
+                value={difficulty}
+                onChange={(e) => setDifficulty(e.target.value)}
+              >
+                <option value="">Select Difficulty</option>
+                <option value="Easy">Easy</option>
+                <option value="Medium">Medium</option>
+                <option value="Hard">Hard</option>
+              </select>
+            </div>
 
-          <div>
-            <h3>Questions</h3>
-            {questions.map((question, index) => (
-              <div key={index} style={{ marginBottom: '20px' }}>
-                <label>Question {index + 1}:</label>
-                <input
-                  type="text"
-                  value={question.questionText}
-                  onChange={(e) =>
-                    updateQuestion(index, 'questionText', e.target.value)
-                  }
-                  placeholder={`Enter question ${index + 1}`}
-                  style={{ marginLeft: '10px', padding: '5px', width: '300px' }}
-                />
-                <div style={{ marginLeft: '20px', marginTop: '10px' }}>
-                  {question.options.map((option, optionIndex) => (
-                    <div key={optionIndex} style={{ marginBottom: '5px' }}>
-                      <label>Option {optionIndex + 1}:</label>
-                      <input
-                        type="text"
-                        value={option}
-                        onChange={(e) =>
-                          updateQuestion(index, optionIndex, e.target.value)
-                        }
-                        placeholder={`Option ${optionIndex + 1}`}
-                        style={{ marginLeft: '10px', padding: '5px' }}
-                      />
-                    </div>
-                  ))}
-                  <div style={{ marginTop: '10px' }}>
+            <div className="questions-container">
+              <h3>Questions</h3>
+              {questions.map((question, index) => (
+                <div key={index} className="question-group" style={{ marginBottom: '30px' }}>
+                  <label style={{ marginBottom: '10px' }}>
+                    Question {index + 1}:
+                  </label>
+                  <input
+                    type="text"
+                    value={question.questionText}
+                    onChange={(e) =>
+                      updateQuestion(index, 'questionText', e.target.value)
+                    }
+                    placeholder={`Enter question ${index + 1}`}
+                    style={{ marginBottom: '15px', width: '100%' }}
+                  />
+                  <div
+                    className="options-row"
+                    style={{
+                      display: 'flex',
+                      flexWrap: 'wrap',
+                      columnGap: '10px',
+                      rowGap: '10px',
+                      marginBottom: '15px',
+                    }}
+                  >
+                    {['A', 'B', 'C', 'D'].map((letter, i) => (
+                      <div
+                        key={i}
+                        className="option-item"
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          marginRight: '10px',
+                          width: '48%', // Two options per row
+                        }}
+                      >
+                        <span>{letter}</span>
+                        <input
+                          type="text"
+                          value={question.options[i]}
+                          onChange={(e) => updateQuestion(index, i, e.target.value)}
+                          placeholder={`Option ${letter}`}
+                          style={{ marginLeft: '5px' }}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                  <div style={{ marginBottom: '20px' }}>
                     <label>Correct Answer:</label>
                     <select
                       value={question.correctAnswer}
                       onChange={(e) =>
                         updateQuestion(index, 'correctAnswer', e.target.value)
                       }
-                      style={{ marginLeft: '10px', padding: '5px' }}
+                      style={{
+                        display: 'block',  // Ensure it is block-level for alignment
+                        width: '100%', // Full width to match the input
+                        marginTop: '10px', // Space between dropdown and options
+                      }}
                     >
-                      <option value="">Select correct answer</option>
-                      {question.options.map((option, optionIndex) => (
-                        <option key={optionIndex} value={option}>
-                          {option}
-                        </option>
-                      ))}
+                      <option value="">Select correct option</option>
+                      <option value="0">A</option>
+                      <option value="1">B</option>
+                      <option value="2">C</option>
+                      <option value="3">D</option>
                     </select>
                   </div>
                 </div>
+              ))}
+              <div className="button-row">
+                <button type="button" onClick={addQuestion} className="add-question">
+                  Add Question
+                </button>
+                <button type="button" onClick={handleSaveQuiz} className="save-quiz">
+                  Save Quiz
+                </button>
               </div>
-            ))}
-            <button
-              type="button"
-              onClick={addQuestion}
-              style={{
-                marginTop: '10px',
-                padding: '10px',
-                backgroundColor: '#007BFF',
-                color: 'white',
-                border: 'none',
-                cursor: 'pointer',
-              }}
-            >
-              Add Question
-            </button>
-          </div>
-        </form>
-        <button
-          type="button"
-          onClick={handleSaveQuiz}
-          style={{
-            marginTop: '20px',
-            padding: '10px',
-            backgroundColor: '#28A745',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-          }}
-        >
-          Save Quiz
-        </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );
