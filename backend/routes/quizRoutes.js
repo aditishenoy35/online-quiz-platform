@@ -25,10 +25,11 @@ router.post('/create', createQuiz);
 router.get('/:id', fetchQuizById);
 
 // Create a quiz
-router.get('/createhistory/:userId', getCreatedQuizzesHistory)
-router.get('/answerhistory/:userId',getAnsweredQuizzesHistory)
+router.get('/createhistory/:userId', getCreatedQuizzesHistory);
+router.get('/answerhistory/:userId',getAnsweredQuizzesHistory);
 
 router.get('/getresults/:responseId',getQuizResults);
+
 router.post('/store-responses',storeResponses);
 module.exports = router;
 

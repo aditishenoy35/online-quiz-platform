@@ -18,8 +18,8 @@ export const fetchDefaultQuizzes = () => API.get('/quizzes/default-quizzes');
 export const fetchCategories = () => API.get('/quizzes/categories');
 export const fetchAllQuizzes = () => API.get('/quizzes/all-quizzes');
 export const quizCreation = (userData) => API.post('/quizzes/create',userData);
-export const getCreatedQuizzesHistory = (userId) => API.get(`/quizzes/${userId}`);
-
+export const getCreatedQuizzesHistory = (userId) => API.get(`/quizzes/createhistory/${userId}`);
+export const getAnsweredQuizzesHistory = (userId) => API.get(`/quizzes/answerhistory/${userId}`);
 export const fetchQuizById = (quizId) => API.get(`/quizzes/${quizId}`);
 export const submitQuizResponses = (payload) => API.post('/quizzes/store-responses', payload);
 
