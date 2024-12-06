@@ -12,6 +12,8 @@ const QuizDetails = ({ quiz, onClose, onProceed }) => {
     onProceed(timePerQuestion); // Pass the selected time to the onProceed function
   };
 
+  const numberOfQuestions = quiz.questions ? quiz.questions.length : 0; // Get the number of questions
+
   return (
     <div className="quiz-details-overlay">
       <div className="quiz-details-modal">
@@ -19,9 +21,10 @@ const QuizDetails = ({ quiz, onClose, onProceed }) => {
         <p><strong>Category:</strong> {quiz.category}</p>
         <p><strong>Difficulty:</strong> {quiz.difficulty}</p>
         <p><strong>Description:</strong> {quiz.description}</p>
+        <p><strong>Number of Questions:</strong> {numberOfQuestions}</p> 
         <p>
           <strong>Instructions:</strong> Please answer all questions carefully. Once you start the
-          quiz, the timer cannot be paused.
+          quiz, the timer cannot be paused. Each Question carries 10 points.
         </p>
         <div>
           <label htmlFor="time-per-question">
