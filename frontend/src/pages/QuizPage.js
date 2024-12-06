@@ -14,12 +14,11 @@ const QuizPage = () => {
   const location = useLocation();
   const timePerQuestion = location.state?.timePerQuestion || 30;
 
-  // Fetch quiz details when the component mounts
   useEffect(() => {
     const getQuiz = async () => {
       try {
         const response = await fetchQuizById(quizId);
-        setQuiz(response.data); // Assuming the response contains the quiz data
+        setQuiz(response.data);
       } catch (error) {
         console.error('Failed to fetch quiz:', error);
       }
@@ -27,16 +26,14 @@ const QuizPage = () => {
     getQuiz();
   }, [quizId]);
 
-  // Handle the transition to the next question
   const handleNextQuestion = () => {
     if (currentQuestion < quiz.questions.length - 1) {
-      setCurrentQuestion((prev) => prev + 1); // Move to the next question
+      setCurrentQuestion((prev) => prev + 1);
     } else {
-      submitQuiz(); // Submit quiz when all questions are answered
+      submitQuiz();
     }
   };
 
-  // Handle selected option for a question
   const handleOptionChange = (questionId, selectedOption) => {
     setResponses((prevResponses) => {
       const existingResponse = prevResponses.find(
@@ -54,7 +51,6 @@ const QuizPage = () => {
     });
   };
 
-  // Submit the quiz
   const submitQuiz = async () => {
     try {
       const payload = {
@@ -66,7 +62,7 @@ const QuizPage = () => {
       const response = await submitQuizResponses(payload);
       const result = response.data;
       if (response.status === 201) {
-        navigate('/quiz/results', { state: { score: result.score, responseId:result.responseId} });
+        navigate('/quiz/results', { state: { score: result.score, responseId: result.responseId } });
       } else {
         alert(`Error: ${result.error}`);
       }
@@ -84,6 +80,7 @@ const QuizPage = () => {
         <div className="question-box">
           <Question
             question={quiz.questions[currentQuestion]}
+            questionNumber={currentQuestion + 1} 
             handleOptionChange={handleOptionChange}
           />
         </div>

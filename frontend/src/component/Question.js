@@ -1,10 +1,10 @@
 import React from 'react';
 import '../styles/Start.css'; // Import CSS for styling
 
-const Question = ({ question, handleOptionChange }) => {
+const Question = ({ question, questionNumber, handleOptionChange }) => {
   return (
     <div className="question">
-      <h3 className="question-text">{question.text}</h3>
+      <h3 className="question-text">{questionNumber}. {question.text}</h3>
       <div className="options">
         {question.options.map((option) => (
           <label key={option.text} className="option">
