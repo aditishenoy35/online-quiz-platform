@@ -5,7 +5,7 @@ const {
   getCategories,
   fetchQuizById,
 } = require('../controllers/quizController');
-const {storeResponses, getQuizResults} = require('../controllers/QuizStarter');
+const {storeResponses, getQuizResults, hasUserTakenQuiz} = require('../controllers/QuizStarter');
 const { createQuiz } = require('../controllers/quizCreation');
 const { getUserQuizHistory } = require('../controllers/quizhistory');
 const {deleteUserQuiz} = require('../controllers/quizhistory')
@@ -33,5 +33,8 @@ router.get('/getresults/:responseId',getQuizResults);
 router.post('/store-responses',storeResponses);
 
 router.delete('/user/:userId/quiz/:quizId', deleteUserQuiz);
+
+router.post('/attempt', hasUserTakenQuiz);
+
 module.exports = router;
 

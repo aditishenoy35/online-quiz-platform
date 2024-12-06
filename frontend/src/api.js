@@ -25,3 +25,6 @@ export const submitQuizResponses = (payload) => API.post('/quizzes/store-respons
 export const deleteUserQuiz = (userId, quizId) => API.delete(`/user/${userId}/quiz/${quizId}`);
 
 export const getQuizResults = (responseId) => API.get(`/quizzes/getresults/${responseId}`);
+export const checkQuizAttempt =(payload) => API.post("/quizzes/attempt",payload);
+
+
