@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import Navbar from '../component/Navbar';
 import { getUserQuizHistory, deleteUserQuiz } from '../api';
 import '../styles/QuizHistory.css'; // Import the custom CSS for styling
+import { IconButton, Tooltip, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const QuizHistory = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -11,6 +13,8 @@ const QuizHistory = () => {
     answeredQuizzes: [],
   });
   const [error, setError] = useState('');
+  const [openDialog, setOpenDialog] = useState(false);
+  const [quizToDelete, setQuizToDelete] = useState(null);
 
   useEffect(() => {
     if (!userId) {
@@ -38,11 +42,9 @@ const QuizHistory = () => {
     try {
       await deleteUserQuiz(userId, quizId); // Delete the quiz from the backend
       setQuizHistory((prevState) => {
-        // Remove the quiz from created quizzes
         const updatedCreatedQuizzes = prevState.createdQuizzes.filter(
           (quiz) => quiz._id !== quizId
         );
-        // Remove answered quizzes that reference the deleted quiz
         const updatedAnsweredQuizzes = prevState.answeredQuizzes.filter(
           (response) => response.quiz?._id !== quizId
         );
@@ -66,7 +68,7 @@ const QuizHistory = () => {
       <div className="content">
         <h2>Quiz History</h2>
         {error && <p className="error-message">{error}</p>}
-        
+
         {/* Created Quizzes Section */}
         <section className="quiz-section">
           <h3>Created Quizzes</h3>
@@ -81,7 +83,17 @@ const QuizHistory = () => {
                     <p><strong>Category:</strong> {quiz.category}</p>
                     <p><strong>Difficulty:</strong> {quiz.difficulty}</p>
                     <p>{quiz.description}</p>
-                    <button onClick={() => handleDeleteQuiz(quiz._id)}>Delete Quiz</button>
+                    <Tooltip title="Delete Quiz">
+                      <IconButton
+                        onClick={() => {
+                          setQuizToDelete(quiz._id);
+                          setOpenDialog(true);
+                        }}
+                        className="custom-delete-button"
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </Tooltip>
                   </div>
                 </div>
               ))
@@ -123,6 +135,31 @@ const QuizHistory = () => {
           </div>
         </section>
       </div>
+
+      {/* Confirmation Dialog */}
+      <Dialog
+        open={openDialog}
+        onClose={() => setOpenDialog(false)}
+      >
+        <DialogTitle>Confirm Deletion</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to delete this quiz? This action cannot be undone.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenDialog(false)}>Cancel</Button>
+          <Button
+            onClick={() => {
+              handleDeleteQuiz(quizToDelete);
+              setOpenDialog(false);
+            }}
+            color="error"
+          >
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

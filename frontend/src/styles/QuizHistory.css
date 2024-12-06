@@ -13,6 +13,15 @@
   padding: 30px;
   overflow-y: auto;
 }
+/* Center-align the main heading */
+.content h2 {
+  text-align: center; 
+  font-size: 2rem; 
+  color: #2c3e50; 
+  font-weight: bold; 
+  margin-bottom: 20px; 
+}
+
 
 /* Error message styling */
 .error-message {
@@ -25,7 +34,7 @@
 .quiz-section h3 {
   margin-bottom: 15px;
   font-size: 1.5rem;
-  color: #333;
+  color: #2c3e50;
   font-weight: bold;
 }
 
@@ -121,4 +130,13 @@
   color: #555;
   font-size: 0.9rem;
   line-height: 1.4;
+}
+
+.custom-delete-button {
+  color: #2c3e50; 
+  transition: color 0.3s; 
+}
+
+.custom-delete-button:hover {
+  color: red; 
 }
