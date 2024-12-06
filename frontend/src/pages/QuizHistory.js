@@ -43,29 +43,29 @@ const QuizHistory = () => {
       <div className="content">
         <h2>Quiz History</h2>
         {error && <p className="error-message">{error}</p>}
-
-        {/* Created Quizzes Section */}
-        <section className="quiz-section">
-          <h3>Created Quizzes</h3>
-          <div className="card-container">
-            {createdQuizzes.length > 0 ? (
-              createdQuizzes.map((quiz) => (
-                <div className="quiz-card" key={quiz._id}>
-                  <div className="quiz-card-header">
-                    <h4>{quiz.title}</h4>
-                  </div>
-                  <div className="quiz-card-body">
-                    <p>{quiz.description}</p>
-                    <p><strong>Category:</strong> {quiz.category}</p>
-                    <p><strong>Difficulty:</strong> {quiz.difficulty}</p>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <p>No created quizzes found.</p>
-            )}
+{/* Created Quizzes Section */}
+<section className="quiz-section">
+  <h3>Created Quizzes</h3>
+  <div className="card-container">
+    {createdQuizzes.length > 0 ? (
+      createdQuizzes.map((quiz) => (
+        <div className="quiz-card created-quiz" key={quiz._id}>
+          <div className="quiz-card-header">
+            <h4>{quiz.title}</h4>
           </div>
-        </section>
+          <div className="quiz-card-body">
+            <p><strong>Category:</strong> {quiz.category}</p>
+            <p><strong>Difficulty:</strong> {quiz.difficulty}</p>
+            <p>{quiz.description}</p>
+          </div>
+        </div>
+      ))
+    ) : (
+      <p>No created quizzes found.</p>
+    )}
+  </div>
+</section>
+
 
         <hr className="divider" /> {/* Divider between sections */}
 
@@ -75,7 +75,7 @@ const QuizHistory = () => {
           <div className="card-container">
             {answeredQuizzes.length > 0 ? (
               answeredQuizzes.map((response) => (
-                <div className="quiz-card" key={response._id}>
+                <div className="quiz-card answered-quiz" key={response._id}>
                   <div className="quiz-card-header">
                     <h4>{response.quiz?.title}</h4>
                   </div>
@@ -84,7 +84,10 @@ const QuizHistory = () => {
                     <p><strong>Category:</strong> {response.quiz?.category}</p>
                     <p><strong>Difficulty:</strong> {response.quiz?.difficulty}</p>
                     <p><strong>Score:</strong> {response.score}</p>
-                    <p><strong>Submitted on:</strong> {response.submittedAt ? new Date(response.submittedAt).toLocaleDateString() : 'N/A'}</p>
+                    <p>
+                      <strong>Submitted on:</strong>{' '}
+                      {response.submittedAt ? new Date(response.submittedAt).toLocaleDateString() : 'N/A'}
+                    </p>
                   </div>
                 </div>
               ))
