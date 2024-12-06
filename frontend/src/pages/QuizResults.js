@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { getQuizResults } from '../api'; // Assuming you have an API call for this
 import '../styles/QuizResults.css'; // Import the CSS file for styling
 
 const QuizResults = () => {
   const { state } = useLocation(); // Fetch score passed via state
+  const navigate = useNavigate(); // Initialize navigation
   const [quizResult, setQuizResult] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -24,6 +25,14 @@ const QuizResults = () => {
     fetchQuizResults();
   }, [state.responseId]);
 
+  const handleGoToQuizzes = () => {
+    navigate('/quizzes'); // Navigate to quizzes page
+  };
+
+  const handleViewQuizHistory = () => {
+    navigate('/history'); // Navigate to quiz history page
+  };
+
   if (loading) {
     return <div className="quiz-loading">Loading...</div>;
   }
@@ -31,6 +40,10 @@ const QuizResults = () => {
   if (error) {
     return <div className="quiz-error">{error}</div>;
   }
+
+  // Calculate Total Score
+  const numberOfQuestions = quizResult.correctResponses.length + quizResult.incorrectResponses.length;
+  const totalScore = numberOfQuestions * 10;
 
   return (
     <div className="quiz-results-container">
@@ -42,7 +55,7 @@ const QuizResults = () => {
           <tbody>
             <tr>
               <td className="label">Score Obtained:</td>
-              <td className="value">{quizResult.score}</td>
+              <td className="value">{quizResult.score} / {totalScore}</td>
             </tr>
             <tr>
               <td className="label">Percentage:</td>
@@ -62,8 +75,8 @@ const QuizResults = () => {
         </div>
 
         <div className="actions">
-          <button>Go to Quizzes</button>
-          <button>View Quiz History</button>
+          <button onClick={handleGoToQuizzes}>Go to Quizzes</button>
+          <button onClick={handleViewQuizHistory}>View Quiz History</button>
         </div>
       </div>
     </div>
