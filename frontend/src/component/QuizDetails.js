@@ -24,7 +24,7 @@ const QuizDetails = ({ quiz, onClose, onProceed }) => {
         <p><strong>Number of Questions:</strong> {numberOfQuestions}</p> 
         <p>
           <strong>Instructions:</strong> Please answer all questions carefully. Once you start the
-          quiz, the timer cannot be paused.
+          quiz, the timer cannot be paused. Each Question carries 10 points.
         </p>
         <div>
           <label htmlFor="time-per-question">
