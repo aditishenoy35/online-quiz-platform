@@ -15,6 +15,7 @@ const QuizView = () => {
   const [includeUserQuizzes, setIncludeUserQuizzes] = useState(true); // State for user quizzes
   const [includeDefaultQuizzes, setIncludeDefaultQuizzes] = useState(true); // State for default quizzes
   const [selectedQuiz, setSelectedQuiz] = useState(null);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [showRetakeDialog, setShowRetakeDialog] = useState(false);
   const [quizScore, setQuizScore] = useState(null);
   const [showQuizDetailsDialog, setShowQuizDetailsDialog] = useState(false);
@@ -78,7 +79,7 @@ const QuizView = () => {
 
   return (
     <div style={{ display: 'flex', height: '100vh', overflow: 'hidden', margin: 0 }}>
-      <Navbar />
+      <Navbar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
       <div style={{ flex: 1, backgroundColor: '#f4f4f9', paddingTop: '0', overflowY: 'auto', overflowX: 'hidden' }}>
         <Header />
         <div style={{ padding: '20px' }}>
