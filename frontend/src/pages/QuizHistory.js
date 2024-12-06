@@ -34,6 +34,29 @@ const QuizHistory = () => {
     fetchQuizHistory();
   }, [userId]);
 
+  const handleDeleteQuiz = async (quizId) => {
+    try {
+      await deleteUserQuiz(userId, quizId); // Delete the quiz from the backend
+      setQuizHistory((prevState) => {
+        // Remove the quiz from created quizzes
+        const updatedCreatedQuizzes = prevState.createdQuizzes.filter(
+          (quiz) => quiz._id !== quizId
+        );
+        // Remove answered quizzes that reference the deleted quiz
+        const updatedAnsweredQuizzes = prevState.answeredQuizzes.filter(
+          (response) => response.quiz?._id !== quizId
+        );
+        return {
+          createdQuizzes: updatedCreatedQuizzes,
+          answeredQuizzes: updatedAnsweredQuizzes,
+        };
+      });
+    } catch (err) {
+      console.error('Error deleting quiz:', err);
+      setError('Error deleting quiz. Please try again later.');
+    }
+  };
+
   const { createdQuizzes, answeredQuizzes } = quizHistory;
 
   return (
@@ -43,29 +66,30 @@ const QuizHistory = () => {
       <div className="content">
         <h2>Quiz History</h2>
         {error && <p className="error-message">{error}</p>}
-{/* Created Quizzes Section */}
-<section className="quiz-section">
-  <h3>Created Quizzes</h3>
-  <div className="card-container">
-    {createdQuizzes.length > 0 ? (
-      createdQuizzes.map((quiz) => (
-        <div className="quiz-card created-quiz" key={quiz._id}>
-          <div className="quiz-card-header">
-            <h4>{quiz.title}</h4>
+        
+        {/* Created Quizzes Section */}
+        <section className="quiz-section">
+          <h3>Created Quizzes</h3>
+          <div className="card-container">
+            {createdQuizzes.length > 0 ? (
+              createdQuizzes.map((quiz) => (
+                <div className="quiz-card created-quiz" key={quiz._id}>
+                  <div className="quiz-card-header">
+                    <h4>{quiz.title}</h4>
+                  </div>
+                  <div className="quiz-card-body">
+                    <p><strong>Category:</strong> {quiz.category}</p>
+                    <p><strong>Difficulty:</strong> {quiz.difficulty}</p>
+                    <p>{quiz.description}</p>
+                    <button onClick={() => handleDeleteQuiz(quiz._id)}>Delete Quiz</button>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p>No created quizzes found.</p>
+            )}
           </div>
-          <div className="quiz-card-body">
-            <p><strong>Category:</strong> {quiz.category}</p>
-            <p><strong>Difficulty:</strong> {quiz.difficulty}</p>
-            <p>{quiz.description}</p>
-          </div>
-        </div>
-      ))
-    ) : (
-      <p>No created quizzes found.</p>
-    )}
-  </div>
-</section>
-
+        </section>
 
         <hr className="divider" /> {/* Divider between sections */}
 
@@ -75,21 +99,23 @@ const QuizHistory = () => {
           <div className="card-container">
             {answeredQuizzes.length > 0 ? (
               answeredQuizzes.map((response) => (
-                <div className="quiz-card answered-quiz" key={response._id}>
-                  <div className="quiz-card-header">
-                    <h4>{response.quiz?.title}</h4>
+                response.quiz ? ( // Ensure that the quiz exists
+                  <div className="quiz-card answered-quiz" key={response._id}>
+                    <div className="quiz-card-header">
+                      <h4>{response.quiz.title}</h4>
+                    </div>
+                    <div className="quiz-card-body">
+                      <p>{response.quiz.description}</p>
+                      <p><strong>Category:</strong> {response.quiz.category}</p>
+                      <p><strong>Difficulty:</strong> {response.quiz.difficulty}</p>
+                      <p><strong>Score:</strong> {response.score}</p>
+                      <p>
+                        <strong>Submitted on:</strong>{' '}
+                        {response.submittedAt ? new Date(response.submittedAt).toLocaleDateString() : 'N/A'}
+                      </p>
+                    </div>
                   </div>
-                  <div className="quiz-card-body">
-                    <p>{response.quiz?.description}</p>
-                    <p><strong>Category:</strong> {response.quiz?.category}</p>
-                    <p><strong>Difficulty:</strong> {response.quiz?.difficulty}</p>
-                    <p><strong>Score:</strong> {response.score}</p>
-                    <p>
-                      <strong>Submitted on:</strong>{' '}
-                      {response.submittedAt ? new Date(response.submittedAt).toLocaleDateString() : 'N/A'}
-                    </p>
-                  </div>
-                </div>
+                ) : null
               ))
             ) : (
               <p>No answered quizzes found.</p>
