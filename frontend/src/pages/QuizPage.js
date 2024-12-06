@@ -58,11 +58,16 @@ const QuizPage = () => {
         quizId,
         responses,
       };
-
+  
       const response = await submitQuizResponses(payload);
       const result = response.data;
       if (response.status === 201) {
-        navigate('/quiz/results', { state: { score: result.score, responseId: result.responseId } });
+        // Make sure result contains responseId
+        const responseId = result.responseId;
+        if (!responseId) {
+          throw new Error('No response ID found');
+        }
+        navigate('/quiz/results', { state: { score: result.score, responseId } });
       } else {
         alert(`Error: ${result.error}`);
       }
@@ -70,6 +75,7 @@ const QuizPage = () => {
       console.error('Failed to submit quiz:', error);
     }
   };
+  
 
   if (!quiz) return <div>Loading quiz...</div>;
 

@@ -1,19 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import QuizFilters from '../component/QuizFilters';
-import { fetchAllQuizzes } from '../api';
+import { fetchAllQuizzes, checkQuizAttempt } from '../api'; // Add API for checking attempts
 import Navbar from '../component/Navbar';
-import Header from '../component/Header'; // Import the Header component
+import Header from '../component/Header';
 import '../styles/Dashboard.css';
 import QuizDetails from '../component/QuizDetails';
+import ConfirmationDialog from '../component/ConfirmationDialog'; // Import the dialog component
 import { useNavigate } from 'react-router-dom';
 
 const QuizView = () => {
   const [quizzes, setQuizzes] = useState([]);
   const [difficulty, setDifficulty] = useState('');
+  const [quizScore, setQuizScore] = useState(null);
   const [category, setCategory] = useState('');
   const [selectedQuiz, setSelectedQuiz] = useState(null);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Track sidebar open state
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [showRetakeDialog, setShowRetakeDialog] = useState(false); // For retake confirmation
+  const [userHasTakenQuiz, setUserHasTakenQuiz] = useState(false);
+  const [quizToRetake, setQuizToRetake] = useState(null); // Store quiz to retake if confirmed
+  const [showQuizDetailsDialog, setShowQuizDetailsDialog] = useState(false); // Control the QuizDetails dialog visibility
   const navigate = useNavigate();
+
+  const userId = localStorage.getItem('userId'); // Retrieve userId from localStorage
 
   useEffect(() => {
     const fetchAndFilterQuizzes = async () => {
@@ -21,11 +29,9 @@ const QuizView = () => {
         const response = await fetchAllQuizzes();
         let filtered = response.data;
 
-        // Filter based on difficulty and category
         if (difficulty) {
           filtered = filtered.filter((quiz) => quiz.difficulty === difficulty);
         }
-
         if (category) {
           filtered = filtered.filter((quiz) => quiz.category === category);
         }
@@ -39,33 +45,49 @@ const QuizView = () => {
     fetchAndFilterQuizzes();
   }, [difficulty, category]);
 
-  const handleStartClick = (quiz) => {
-    setSelectedQuiz(quiz); // Set the selected quiz
+  const handleStartClick = async (quiz) => {
+    try {
+      const payload = {
+        quizId: quiz._id,
+        userId: userId, // Retrieved from localStorage
+      };
+      // Check if the user has already taken this quiz
+      const response = await checkQuizAttempt(payload);
+      setSelectedQuiz(quiz);
+
+      if (response.data.taken) {
+        setUserHasTakenQuiz(true);
+        setQuizScore(response.data.score);
+        setShowRetakeDialog(true); // Show confirmation dialog for retake
+      } else {
+        setUserHasTakenQuiz(false);
+        setShowQuizDetailsDialog(true); // Show QuizDetails dialog for non-retaken quiz
+      }
+    } catch (error) {
+      console.error('Error checking quiz attempt:', error);
+    }
   };
 
-  const handleProceed = (timePerQuestion) => {
-    navigate(`/quiz/${selectedQuiz._id}`, { state: { timePerQuestion } }); // Pass time to the quiz page
+  const handleRetakeConfirmation = () => {
+    setShowRetakeDialog(false);
+    setShowQuizDetailsDialog(true); // Show QuizDetails dialog after retake confirmation
+  };
+
+  const handleProceedToQuiz = () => {
+    setShowQuizDetailsDialog(false); // Close the QuizDetails dialog
+    navigateToQuiz(); // Proceed to quiz start page
+  };
+
+  const navigateToQuiz = (timePerQuestion) => {
+    navigate(`/quiz/${selectedQuiz._id}`, { state: { timePerQuestion } });
   };
 
   return (
     <div style={{ display: 'flex', height: '100vh', overflow: 'hidden', margin: 0 }}>
-      {/* Sidebar (Navbar) */}
       <Navbar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
 
-      {/* Content Area */}
-      <div
-        style={{
-          flex: 1,
-          backgroundColor: '#f4f4f9',
-          paddingTop: '0', // Ensure no padding at the top
-          overflowY: 'auto', // Allow scrolling
-          overflowX: 'hidden', // Prevent horizontal scrolling
-        }}
-      >
-        {/* Header Component */}
+      <div style={{ flex: 1, backgroundColor: '#f4f4f9', paddingTop: '0', overflowY: 'auto', overflowX: 'hidden' }}>
         <Header />
-
-        {/* Filters Component */}
         <div style={{ padding: '20px' }}>
           <QuizFilters
             difficulty={difficulty}
@@ -83,7 +105,7 @@ const QuizView = () => {
                   <p>Difficulty: {quiz.difficulty}</p>
                   <p>{quiz.description}</p>
                   <button
-                    onClick={() => handleStartClick(quiz)} // Open QuizDetails modal
+                    onClick={() => handleStartClick(quiz)}
                     className="btn-start-quiz"
                   >
                     Start Quiz
@@ -96,13 +118,23 @@ const QuizView = () => {
           </div>
         </div>
       </div>
-        {selectedQuiz && (
-          <QuizDetails
-            quiz={selectedQuiz}
-            onClose={() => setSelectedQuiz(null)} // Close modal
-            onProceed={handleProceed} // Navigate to quiz page with time
-          />
-        )}
+
+      {showQuizDetailsDialog && (
+        <QuizDetails
+          quiz={selectedQuiz}
+          onClose={() => setShowQuizDetailsDialog(false)} // Close the QuizDetails dialog
+          onProceed={handleProceedToQuiz} // Proceed to quiz page
+        />
+      )}
+
+      {showRetakeDialog && (
+        <ConfirmationDialog
+          title="Retake Quiz"
+          message={`You have already taken this quiz. Your previous score was ${quizScore}. Do you want to retake it?`}
+          onConfirm={handleRetakeConfirmation} // Show QuizDetails dialog after confirmation
+          onCancel={() => setShowRetakeDialog(false)}
+        />
+      )}
     </div>
   );
 };

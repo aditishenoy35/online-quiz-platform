@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from '../component/Navbar';
-import { getUserQuizHistory } from '../api';
+import { getUserQuizHistory, deleteUserQuiz } from '../api';
 import '../styles/QuizHistory.css'; // Import the custom CSS for styling
 
 const QuizHistory = () => {

@@ -1,19 +1,6 @@
 const Quiz = require('../models/Quiz');
 const Response = require('../models/Response');
-
-exports.startQuiz = async (req, res) => {
-  try {
-      const { quizId } = req.body;
-
-      const quiz = await Quiz.findById(quizId);
-      if (!quiz) return res.status(404).json({ error: "Quiz not found" });
-
-      res.status(200).json({ quiz });
-  } catch (error) {
-      res.status(500).json({ error: error.message });
-  }
-};
-
+//stores responses when user starts quiz
 exports.storeResponses = async (req, res) => {
   try {
     const { userId, quizId, responses } = req.body;
@@ -33,22 +20,41 @@ exports.storeResponses = async (req, res) => {
       return { ...response, isCorrect };
     });
 
-    // Save to the Response model (without saving it in a variable)
-    const savedResponse = await Response.create({
-      user: userId,
-      quiz: quizId,
-      responses: formattedResponses,
-      score: totalScore,
-    });
+    // Find the existing response document
+    const existingResponse = await Response.findOne({ user: userId, quiz: quizId });
 
-    // Return the responseId along with the score
-    res.status(201).json({ message: "Responses saved", score: totalScore, responseId: savedResponse._id });
+    if (existingResponse) {
+      // Update the existing response with new data
+      existingResponse.responses = formattedResponses;
+      existingResponse.score = totalScore;
+      existingResponse.submittedAt = new Date(); // Update timestamp
+      await existingResponse.save();
+
+      res.status(201).json({
+        message: "Quiz retaken and response updated",
+        score: totalScore,
+        responseId: existingResponse._id,
+      });
+    } else {
+      // Create a new response if no previous attempt exists
+      const newResponse = await Response.create({
+        user: userId,
+        quiz: quizId,
+        responses: formattedResponses,
+        score: totalScore,
+      });
+
+      res.status(201).json({
+        message: "Response saved",
+        score: totalScore,
+        responseId: newResponse._id,
+      });
+    }
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
-
-
+//gets number of responses in a quiz
 exports.getNumberOfQuestions = async (req, res) => {
   try {
       const { quizId } = req.params;
@@ -126,6 +132,24 @@ exports.getQuizResults = async (req, res) => {
     res.status(500).json({ message: 'Error fetching quiz results' });
   }
 };
+
+// Check if the user has already taken a specific quiz
+exports.hasUserTakenQuiz = async (req, res) => {
+  try {
+    const { userId, quizId } = req.body;
+
+    const existingResponse = await Response.findOne({ user: userId, quiz: quizId });
+
+    if (existingResponse) {
+      res.status(200).json({ taken: true, score: existingResponse.score });
+    } else {
+      res.status(200).json({ taken: false });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 
 
 
