@@ -1,5 +1,6 @@
 const Quiz = require('../models/Quiz');
 const Response = require('../models/Response');
+const User=require('../models/User');
 //stores responses when user starts quiz
 exports.storeResponses = async (req, res) => {
   try {
@@ -30,6 +31,14 @@ exports.storeResponses = async (req, res) => {
       existingResponse.submittedAt = new Date(); // Update timestamp
       await existingResponse.save();
 
+      // Update User model: increase score and quizzes played
+      const user = await User.findById(userId);
+      if (!user) return res.status(404).json({ error: "User not found" });
+
+      user.score += totalScore; // Add total score to user's score
+      user.quizzesPlayed += 1; // Increment quizzes played
+      await user.save(); // Save the updated user
+
       res.status(201).json({
         message: "Quiz retaken and response updated",
         score: totalScore,
@@ -44,6 +53,14 @@ exports.storeResponses = async (req, res) => {
         score: totalScore,
       });
 
+      // Update User model: increase score and quizzes played
+      const user = await User.findById(userId);
+      if (!user) return res.status(404).json({ error: "User not found" });
+
+      user.score += totalScore; // Add total score to user's score
+      user.quizzesPlayed += 1; // Increment quizzes played
+      await user.save(); // Save the updated user
+
       res.status(201).json({
         message: "Response saved",
         score: totalScore,
@@ -54,6 +71,7 @@ exports.storeResponses = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
 //gets number of responses in a quiz
 exports.getNumberOfQuestions = async (req, res) => {
   try {
