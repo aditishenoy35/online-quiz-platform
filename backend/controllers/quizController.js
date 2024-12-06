@@ -12,27 +12,32 @@ exports.getDefaultQuizzes = async (req, res) => {
   }
 };
 
-// Fetch quizzes with optional filters for difficulty and category
 exports.getAllQuizzes = async (req, res) => {
+  const { difficulty, category, includeUserQuizzes, includeDefaultQuizzes } = req.query;
+
   try {
-    const { difficulty, category } = req.query;
-
-    // Build the query object dynamically based on provided filters
     const filter = {};
-    if (difficulty) {
-      filter.difficulty = difficulty;
-    }
-    if (category) {
-      filter.category = category;
-    }
 
-    const quizzes = await Quiz.find(filter); // Fetch quizzes based on filters
+    // Apply difficulty and category filters
+    if (difficulty) filter.difficulty = difficulty;
+    if (category) filter.category = category;
+
+    // Apply filters for user-created and default quizzes
+    const orFilters = [];
+    if (includeUserQuizzes === 'true') orFilters.push({ createdBy: { $ne: null } });
+    if (includeDefaultQuizzes === 'true') orFilters.push({ isDefault: true });
+
+    if (orFilters.length > 0) filter.$or = orFilters;
+
+    // Fetch quizzes from the database
+    const quizzes = await Quiz.find(filter);
     res.status(200).json(quizzes);
   } catch (error) {
-    console.error(error.message);
-    res.status(500).json({ message: "Error fetching quizzes" });
+    console.error('Error fetching quizzes:', error);
+    res.status(500).json({ error: 'Error fetching quizzes' });
   }
 };
+
 
 // Fetch unique quiz categories
 exports.getCategories = async (req, res) => {
