@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Navbar from '../component/Navbar';
 import { getUserQuizHistory, deleteUserQuiz } from '../api';
 import '../styles/QuizHistory.css'; // Import the custom CSS for styling
-import { IconButton, Tooltip, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@mui/material';
+import { IconButton, Tooltip, Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ReviewForm from '../component/ReviewForm';
 
@@ -129,14 +129,19 @@ const QuizHistory = () => {
                         {response.submittedAt ? new Date(response.submittedAt).toLocaleDateString() : 'N/A'}
                       </p>
                       <Button
-                      variant="contained"
-                      onClick={() => {
-                        setReviewResponseId(response._id);
-                        setOpenReview(true);
-                      }}
-                    >
-                      Review
-                    </Button>
+                        variant="contained"
+                        style={{
+                          backgroundColor: '#2c3e50',
+                          color: '#fff',
+                          textTransform: 'none',
+                        }}
+                        onClick={() => {
+                          setReviewResponseId(response._id);
+                          setOpenReview(true);
+                        }}
+                      >
+                        Review
+                      </Button>
                     </div>
                   </div>
                 ) : null
