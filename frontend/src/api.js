@@ -23,7 +23,7 @@ export const fetchQuizById = (quizId) => API.get(`/quizzes/${quizId}`);
 export const submitQuizResponses = (payload) => API.post('/quizzes/store-responses', payload);
 // Delete a quiz created by a user
 export const deleteUserQuiz = (userId, quizId) => API.delete(`/quizzes/user/${userId}/quiz/${quizId}`);
-
+export const getLeaderboard = () =>API.post('/quizzes/leaderboard')
 export const getQuizResults = (responseId) => API.get(`/quizzes/getresults/${responseId}`);
 export const checkQuizAttempt =(payload) => API.post("/quizzes/attempt",payload);
 

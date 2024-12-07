@@ -1,31 +1,29 @@
-const User = require('./models/User'); // Assuming the User model is in the models folder
-const Response = require('./models/Response'); // Assuming the Response model is in the models folder
+const express = require('express');
+const mongoose = require('mongoose'); // Ensure this is imported for ObjectId validation
+const User = require('../models/User'); // Adjust the path as needed
 
-/**
- * Get leaderboard based on users' average quiz scores.
- * @returns {Promise<Array>} Leaderboard data sorted by average scores.
- */
-const getLeaderboard = async () => {
+const getLeaderboard = async (req, res) => {
   try {
-    // Fetch all users with their total score and quizzes played
-    const users = await User.find({}).select('name score quizzesPlayed').lean();
+    console.log('Fetching leaderboard...');
+    
+    const leaderboard = await User.find({ quizzesPlayed: { $gt: 0 } })
+      .sort({ score: -1 })
+      .select('name score quizzesPlayed')
+      .limit(10);
 
-    // Calculate the average score for each user
-    const leaderboard = users.map(user => {
-      const averageScore = user.quizzesPlayed > 0 
-        ? (user.score / user.quizzesPlayed).toFixed(2) 
-        : 0;
-      return { name: user.name, averageScore };
+    console.log('Leaderboard fetched successfully:', leaderboard);
+
+    res.status(200).json({
+      success: true,
+      data: leaderboard,
     });
-
-    // Sort by average score in descending order
-    leaderboard.sort((a, b) => b.averageScore - a.averageScore);
-
-    return leaderboard;
   } catch (error) {
     console.error('Error fetching leaderboard:', error);
-    throw error;
+
+    res.status(500).json({
+      success: false,
+      message: 'Internal Server Error',
+    });
   }
 };
-
 module.exports = { getLeaderboard };

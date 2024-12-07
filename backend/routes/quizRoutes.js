@@ -7,8 +7,8 @@ const {
 } = require('../controllers/quizController');
 const {storeResponses, getQuizResults, hasUserTakenQuiz} = require('../controllers/QuizStarter');
 const { createQuiz } = require('../controllers/quizCreation');
-const { getUserQuizHistory } = require('../controllers/quizhistory');
-const {deleteUserQuiz} = require('../controllers/quizhistory')
+const { getUserQuizHistory, deleteUserQuiz } = require('../controllers/quizhistory');
+const { getLeaderboard } = require('../controllers/leaderboard');
 const router = express.Router();
 
 // Fetch 3 default quizzes
@@ -35,6 +35,8 @@ router.post('/store-responses',storeResponses);
 router.delete('/user/:userId/quiz/:quizId', deleteUserQuiz);
 
 router.post('/attempt', hasUserTakenQuiz);
+
+router.post('/leaderboard', getLeaderboard);
 
 module.exports = router;
 
