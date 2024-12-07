@@ -128,7 +128,7 @@ const QuizView = () => {
       {showRetakeDialog && (
         <ConfirmationDialog
           title="Retake Quiz"
-          message={`You have already taken this quiz. Your previous score was ${quizScore}. Do you want to retake it?`}
+          message={`You have already taken this quiz. Your previous score was ${quizScore}. Do you want to retake it? All your progress will be lost. Visit the history page to review your answers.`}
           onConfirm={handleRetakeConfirmation}
           onCancel={() => setShowRetakeDialog(false)}
         />

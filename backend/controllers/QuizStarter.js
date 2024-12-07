@@ -25,6 +25,9 @@ exports.storeResponses = async (req, res) => {
     const existingResponse = await Response.findOne({ user: userId, quiz: quizId });
 
     if (existingResponse) {
+      const user = await User.findById(userId);
+      if (!user) return res.status(404).json({ error: "User not found" });
+      user.score -= existingResponse.score;
       // Update the existing response with new data
       existingResponse.responses = formattedResponses;
       existingResponse.score = totalScore;
@@ -32,11 +35,8 @@ exports.storeResponses = async (req, res) => {
       await existingResponse.save();
 
       // Update User model: increase score and quizzes played
-      const user = await User.findById(userId);
-      if (!user) return res.status(404).json({ error: "User not found" });
-
+      
       user.score += totalScore; // Add total score to user's score
-      user.quizzesPlayed += 1; // Increment quizzes played
       await user.save(); // Save the updated user
 
       res.status(201).json({
