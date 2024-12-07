@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Box, List, ListItem, ListItemText, IconButton, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from '@mui/material';
+import React, { useState, useEffect} from 'react';
+import { Box, List, ListItem, ListItemText, IconButton, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button, Avatar, Typography } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
 import CreateIcon from '@mui/icons-material/Create';
 import HistoryIcon from '@mui/icons-material/History';
@@ -12,9 +12,32 @@ import GmailIcon from '@mui/icons-material/Email';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import PhoneIcon from '@mui/icons-material/Phone';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-
+import { getUser } from '../api';
 const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
-  const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false); // State to handle logout confirmation popup
+  const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false);
+  const [userName, setUserName] = useState('');  // State to handle logout confirmation popup
+  useEffect(() => {
+    // Fetch user details from the backend
+    const fetchUserName = async () => {
+      try {
+        const userId = localStorage.getItem('userId'); // Get userId from local storage
+        if (!userId) {
+          setUserName('Guest'); // Default to Guest if no userId is found
+          return;
+        }
+
+        // Call backend to get user details
+        const response = await getUser(userId);
+        const { name } = response.data;
+        setUserName(name); // Update the state with the user's name
+      } catch (error) {
+        console.error('Error fetching user details:', error);
+        setUserName('Guest'); // Default to Guest in case of an error
+      }
+    };
+
+    fetchUserName();
+  }, []);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen); // Toggle between open and closed sidebar
@@ -59,7 +82,20 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
       <IconButton onClick={toggleSidebar} sx={{ color: 'white', marginBottom: '20px' }}>
         {isSidebarOpen ? <ChevronLeftIcon /> : <MenuIcon />} {/* Change icon based on sidebar state */}
       </IconButton>
-
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          marginBottom: '20px',
+        }}
+      >
+        <Avatar sx={{ bgcolor: '#3498db', marginRight: isSidebarOpen ? '10px' : '0' }}>
+          {userName.charAt(0).toUpperCase()} {/* Display the first letter of the user's name */}
+        </Avatar>
+        {isSidebarOpen && (
+          <Typography sx={{ color: 'white', fontSize: '14px' }}>{userName}</Typography>
+        )}
+      </Box>
       {/* Sidebar Content */}
       <h2 style={{ display: isSidebarOpen ? 'block' : 'none', color: 'white', fontSize: '16px' }}>
         Dashboard
@@ -94,7 +130,7 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
       </List>
 
       {/* Spacer for social links */}
-      <Box sx={{ marginTop: '150px', display: isSidebarOpen ? 'flex' : 'none' }}>
+      <Box sx={{ marginTop: '100px', display: isSidebarOpen ? 'flex' : 'none' }}>
          <IconButton href="https://instagram.com" sx={{ color: 'white' }}><InstagramIcon /></IconButton>
          <IconButton href="https://facebook.com" sx={{ color: 'white' }}><FacebookIcon /></IconButton>
          <IconButton href="mailto:example@gmail.com" sx={{ color: 'white' }}><GmailIcon /></IconButton>
