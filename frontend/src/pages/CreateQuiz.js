@@ -17,6 +17,8 @@ const CreateQuiz = () => {
       correctAnswer: '', // Store the option letter (A, B, C, or D)
     },
   ]);
+  const [quizSubmitted, setQuizSubmitted] = useState(false); // Tracks if quiz is submitted
+  const [showSuccessModal, setShowSuccessModal] = useState(false); // Tracks modal visibility
 
   const userId = localStorage.getItem('userId'); // Fetch user ID from localStorage
 
@@ -64,8 +66,9 @@ const CreateQuiz = () => {
       };
 
       const response = await quizCreation(payload);
+      setShowSuccessModal(true); // Show success modal
+      setQuizSubmitted(true); // Indicate quiz is submitted
       console.log('Quiz saved successfully:', response.data);
-      alert('Quiz created successfully!');
     } catch (error) {
       console.error('Error saving quiz:', error);
       alert('Failed to create quiz. Please try again.');
@@ -208,17 +211,37 @@ const CreateQuiz = () => {
                 </div>
               ))}
               <div className="button-row">
-                <button type="button" onClick={addQuestion} className="add-question">
-                  Add Question
-                </button>
-                <button type="button" onClick={handleSaveQuiz} className="save-quiz">
-                  Save Quiz
-                </button>
+              {!quizSubmitted ? (
+                  <>
+                    <button type="button" onClick={addQuestion} className="add-question">
+                      Add Question
+                    </button>
+                    <button type="button" onClick={handleSaveQuiz} className="save-quiz">
+                      Submit Quiz
+                    </button>
+                  </>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => window.location.href = '/quizzes'} // Navigate to quizzes
+                    className="save-quiz"
+                  >
+                    Go to Quizzes
+                  </button>
+                )}
               </div>
             </div>
           </form>
         </div>
       </div>
+      {showSuccessModal && (
+        <div className="modal">
+          <div className="modal-content">
+            <h3>Quiz Saved Successfully!</h3>
+            <button onClick={() => setShowSuccessModal(false)}>Close</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
