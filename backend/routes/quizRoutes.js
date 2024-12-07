@@ -7,7 +7,7 @@ const {
 } = require('../controllers/quizController');
 const {storeResponses, getQuizResults, hasUserTakenQuiz} = require('../controllers/QuizStarter');
 const { createQuiz } = require('../controllers/quizCreation');
-const { getUserQuizHistory, deleteUserQuiz } = require('../controllers/quizhistory');
+const { getUserQuizHistory, deleteUserQuiz, getQuizWithResponses } = require('../controllers/quizhistory');
 const { getLeaderboard } = require('../controllers/leaderboard');
 const router = express.Router();
 
@@ -37,6 +37,8 @@ router.delete('/user/:userId/quiz/:quizId', deleteUserQuiz);
 router.post('/attempt', hasUserTakenQuiz);
 
 router.post('/leaderboard', getLeaderboard);
+
+router.get('/responsequiz/:responseId',getQuizWithResponses);
 
 module.exports = router;
 

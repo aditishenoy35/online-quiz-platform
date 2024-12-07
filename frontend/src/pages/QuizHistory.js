@@ -4,6 +4,7 @@ import { getUserQuizHistory, deleteUserQuiz } from '../api';
 import '../styles/QuizHistory.css'; // Import the custom CSS for styling
 import { IconButton, Tooltip, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import ReviewForm from '../component/ReviewForm';
 
 const QuizHistory = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -15,6 +16,8 @@ const QuizHistory = () => {
   const [error, setError] = useState('');
   const [openDialog, setOpenDialog] = useState(false);
   const [quizToDelete, setQuizToDelete] = useState(null);
+  const [openReview, setOpenReview] = useState(false);
+  const [reviewResponseId, setReviewResponseId] = useState(null);
 
   useEffect(() => {
     if (!userId) {
@@ -125,6 +128,15 @@ const QuizHistory = () => {
                         <strong>Submitted on:</strong>{' '}
                         {response.submittedAt ? new Date(response.submittedAt).toLocaleDateString() : 'N/A'}
                       </p>
+                      <Button
+                      variant="contained"
+                      onClick={() => {
+                        setReviewResponseId(response._id);
+                        setOpenReview(true);
+                      }}
+                    >
+                      Review
+                    </Button>
                     </div>
                   </div>
                 ) : null
@@ -135,17 +147,22 @@ const QuizHistory = () => {
           </div>
         </section>
       </div>
+      {/* Review Dialog */}
+      <Dialog open={openReview} onClose={() => setOpenReview(false)} fullWidth maxWidth="md">
+        <DialogTitle>Review your answers</DialogTitle>
+        <DialogContent>
+          {reviewResponseId && <ReviewForm responseId={reviewResponseId} />}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenReview(false)}>Close</Button>
+        </DialogActions>
+      </Dialog>
 
       {/* Confirmation Dialog */}
-      <Dialog
-        open={openDialog}
-        onClose={() => setOpenDialog(false)}
-      >
+      <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
         <DialogTitle>Confirm Deletion</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            Are you sure you want to delete this quiz? This action cannot be undone.
-          </DialogContentText>
+          Are you sure you want to delete this quiz? This action cannot be undone.
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpenDialog(false)}>Cancel</Button>

@@ -1,50 +1,49 @@
 import React, { useEffect, useState } from "react";
-import { getQuizResults } from "./api"; // Make sure the path is correct to where your API functions are stored
+import { getQuizWithResponses } from "../api"; // Adjust the path to your API functions
+import "../styles/ReviewForm.css";
 
 const ReviewForm = ({ responseId }) => {
-  const [quizData, setQuizData] = useState(null); // Holds the quiz data
-  const [currentSlide, setCurrentSlide] = useState(0); // To track the current slide
-  const [correctAnswers, setCorrectAnswers] = useState([]);
+  const [quizData, setQuizData] = useState(null);
+  const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => {
-    // Fetch the quiz response data using the responseId
-    getQuizResults(responseId)
-      .then(response => {
+    // Fetch the quiz response data
+    getQuizWithResponses(responseId)
+      .then((response) => {
+        console.log("Quiz data:", response.data);
         setQuizData(response.data);
-        setCorrectAnswers(response.data.correctResponses);
       })
-      .catch(error => console.error("Error fetching quiz results:", error));
+      .catch((error) => console.error("Error fetching quiz results:", error));
   }, [responseId]);
 
-  const handleNext = () => {
-    if (currentSlide < quizData.correctResponses.length - 1) {
-      setCurrentSlide(currentSlide + 1);
-    }
-  };
+  if (!quizData || !quizData.mergedData || quizData.mergedData.length === 0) {
+    return <div>Loading...</div>;
+  }
 
-  const handlePrevious = () => {
-    if (currentSlide > 0) {
-      setCurrentSlide(currentSlide - 1);
-    }
-  };
-
-  if (!quizData) return <div>Loading...</div>;
-
-  const currentQuestion = quizData.correctResponses[currentSlide];
+  // Get the current question based on the current slide
+  const currentQuestion = quizData.mergedData[currentSlide];
 
   return (
     <div className="review-form">
+      
       <div className="question-slide">
-        <p>{currentQuestion.questionText}</p>
-        <div className="options">
+        <p className="question-text">{currentQuestion.questionText}</p>
+        <div className="review-options">
           {currentQuestion.options.map((option, index) => {
-            // Highlight selected option based on whether it's correct or not
+            // Highlight only the selected option
             const isSelected = option.text === currentQuestion.selectedOption;
             const isCorrect = option.isCorrect;
+
             return (
               <div
                 key={index}
-                className={`option ${isSelected ? (isCorrect ? "correct" : "incorrect") : ""}`}
+                className={`review-option ${
+                  isSelected
+                    ? isCorrect
+                      ? "selected-correct"
+                      : "selected-incorrect"
+                    : ""
+                }`}
               >
                 {option.text}
               </div>
@@ -54,10 +53,15 @@ const ReviewForm = ({ responseId }) => {
       </div>
 
       <div className="navigation-buttons">
-        <button onClick={handlePrevious} disabled={currentSlide === 0}>
+        <button onClick={() => setCurrentSlide((prev) => Math.max(prev - 1, 0))} disabled={currentSlide === 0}>
           Previous
         </button>
-        <button onClick={handleNext} disabled={currentSlide === quizData.correctResponses.length - 1}>
+        <button
+          onClick={() =>
+            setCurrentSlide((prev) => Math.min(prev + 1, quizData.mergedData.length - 1))
+          }
+          disabled={currentSlide === quizData.mergedData.length - 1}
+        >
           Next
         </button>
       </div>
