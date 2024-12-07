@@ -26,6 +26,8 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
 
   const handleLogoutConfirm = () => {
     // Logic for logging out (e.g., clearing session, token)
+    localStorage.removeItem('token');
+    localStorage.removeItem('userId');
     console.log('Logging out...');
     setIsLogoutDialogOpen(false); // Close the confirmation dialog
     // Redirect to login page or perform logout actions here
