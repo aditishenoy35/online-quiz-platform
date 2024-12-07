@@ -12,30 +12,23 @@ const Leaderboard = () => {
   useEffect(() => {
     const fetchLeaderboard = async () => {
       try {
-        const response = await getLeaderboard();
+        const result = await getLeaderboard(); // Make the API call
 
-        // Ensure the response is JSON-parsable
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const result = await response.json();
-
-        // Check for success in the response
+        // Ensure the response is successful
         if (result.success) {
-          setLeaderboardData(result.data);
+          setLeaderboardData(result.data); // Set the leaderboard data if successful
         } else {
-          throw new Error(result.message || 'Failed to fetch leaderboard.');
+          throw new Error(result.message || 'Failed to fetch leaderboard'); // Throw error if not successful
         }
       } catch (err) {
         console.error('Error fetching leaderboard:', err.message);
-        setError(err.message || 'An unexpected error occurred.');
+        setError(err.message || 'An unexpected error occurred'); // Handle error
       } finally {
-        setLoading(false);
+        setLoading(false); // Always stop loading
       }
     };
 
-    fetchLeaderboard();
+    fetchLeaderboard(); // Call the fetch function
   }, []);
 
   return (
@@ -45,18 +38,22 @@ const Leaderboard = () => {
         style={{
           flex: 1,
           backgroundColor: '#f4f4f9',
-          marginLeft: isSidebarOpen ? '0px' : '0px',
+          marginLeft: isSidebarOpen ? '0px' : '0px', // Adjust margin based on sidebar state
           paddingTop: '0',
           overflowY: 'auto',
           transition: 'margin-left 0.3s ease',
         }}
       >
         <h2 style={{ padding: '20px 0', textAlign: 'center', color: '#333' }}>Leaderboard</h2>
+
+        {/* Show loading message */}
         {loading ? (
           <p style={{ textAlign: 'center', color: '#888' }}>Loading...</p>
         ) : error ? (
+          // Show error message
           <p style={{ textAlign: 'center', color: 'red' }}>{error}</p>
         ) : leaderboardData.length === 0 ? (
+          // Show message if no leaderboard data
           <p style={{ textAlign: 'center', color: '#555' }}>No data available.</p>
         ) : (
           <table
