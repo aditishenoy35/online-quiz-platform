@@ -1,6 +1,6 @@
 const Quiz = require('../models/Quiz');
 const Response = require('../models/Response');
-
+const User=require('../models/User');
 exports.getUserQuizHistory = async (req, res) => {
   const { userId } = req.params; // Extract userId from URL
   try {
@@ -21,11 +21,11 @@ exports.getUserQuizHistory = async (req, res) => {
   }
 };
 
-// Function to delete a quiz created by the user
 exports.deleteUserQuiz = async (req, res) => {
   const { userId, quizId } = req.params; // Extract userId and quizId from URL
-  console.log('Received userId:', userId); // Log userId
+  console.log('Received userId:', userId);
   console.log('Received quizId:', quizId);
+
   try {
     // Verify if the quiz belongs to the user
     const quiz = await Quiz.findOne({ _id: quizId, createdBy: userId });
@@ -33,9 +33,26 @@ exports.deleteUserQuiz = async (req, res) => {
       return res.status(404).json({ message: 'Quiz not found or unauthorized' });
     }
 
-    // Delete the quiz
+    // Find all responses associated with this quiz
+    const responses = await Response.find({ quiz: quizId });
+
+    // Update each user's stats
+    for (const response of responses) {
+      const user = await User.findById(response.user);
+      if (user) {
+        user.score -= response.score; // Deduct the score from the user's total
+        user.quizzesPlayed -= 1; // Decrement the number of quizzes played
+        await user.save(); // Save the updated user stats
+      }
+    }
+
+    // Delete all responses associated with the quiz
+    await Response.deleteMany({ quiz: quizId });
+
+    // Delete the quiz itself
     await Quiz.deleteOne({ _id: quizId });
-    res.status(200).json({ message: 'Quiz deleted successfully' });
+
+    res.status(200).json({ message: 'Quiz and associated data deleted successfully' });
   } catch (error) {
     console.error('Error deleting quiz:', error.message);
     res.status(500).json({ message: 'Error deleting quiz' });
