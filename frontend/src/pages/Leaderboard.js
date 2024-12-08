@@ -44,7 +44,7 @@ const Leaderboard = () => {
         }}
       >
         <div className="leaderboard-content">
-          <h1 className="leaderboard-title">Leaderboard</h1>
+          <h1 className="leaderboard-title">Leaderboard|QuizHive</h1>
           {leaderboard.length > 0 ? (
             <div className="leaderboard-table-container">
               <table className="leaderboard-table">
