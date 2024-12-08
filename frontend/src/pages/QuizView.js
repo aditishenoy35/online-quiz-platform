@@ -1,39 +1,38 @@
 import React, { useEffect, useState } from 'react';
 import QuizFilters from '../component/QuizFilters';
-import { fetchAllQuizzes, checkQuizAttempt } from '../api'; // Add API for checking attempts
+import { fetchAllQuizzes, checkQuizAttempt } from '../api';
 import Navbar from '../component/Navbar';
 import Header from '../component/Header';
 import '../styles/Dashboard.css';
 import QuizDetails from '../component/QuizDetails';
-import ConfirmationDialog from '../component/ConfirmationDialog'; // Import the dialog component
+import ConfirmationDialog from '../component/ConfirmationDialog';
 import { useNavigate } from 'react-router-dom';
 
 const QuizView = () => {
   const [quizzes, setQuizzes] = useState([]);
   const [difficulty, setDifficulty] = useState('');
   const [category, setCategory] = useState('');
-  const [includeUserQuizzes, setIncludeUserQuizzes] = useState(true); // State for user quizzes
-  const [includeDefaultQuizzes, setIncludeDefaultQuizzes] = useState(true); // State for default quizzes
+  const [includeUserQuizzes, setIncludeUserQuizzes] = useState(true);
+  const [includeDefaultQuizzes, setIncludeDefaultQuizzes] = useState(true);
   const [selectedQuiz, setSelectedQuiz] = useState(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [showRetakeDialog, setShowRetakeDialog] = useState(false);
   const [quizScore, setQuizScore] = useState(null);
   const [showQuizDetailsDialog, setShowQuizDetailsDialog] = useState(false);
+  const [timePerQuestion, setTimePerQuestion] = useState(30); // Default 30 seconds
   const navigate = useNavigate();
 
-  const userId = localStorage.getItem('userId'); // Retrieve userId from localStorage
+  const userId = localStorage.getItem('userId');
 
   useEffect(() => {
     const fetchAndFilterQuizzes = async () => {
       try {
-        // Send query params for filtering quizzes
         const response = await fetchAllQuizzes({
           difficulty,
           category,
           includeUserQuizzes,
           includeDefaultQuizzes,
         });
-
         setQuizzes(response.data);
       } catch (error) {
         console.error('Error fetching quizzes:', error);
@@ -68,13 +67,14 @@ const QuizView = () => {
     setShowQuizDetailsDialog(true);
   };
 
-  const handleProceedToQuiz = () => {
+  const handleProceedToQuiz = (selectedTime) => {
+    setTimePerQuestion(selectedTime);
     setShowQuizDetailsDialog(false);
-    navigateToQuiz();
+    navigateToQuiz(selectedTime);
   };
 
-  const navigateToQuiz = () => {
-    navigate(`/quiz/${selectedQuiz._id}`);
+  const navigateToQuiz = (selectedTime) => {
+    navigate(`/quiz/${selectedQuiz._id}`, { state: { timePerQuestion: selectedTime } });
   };
 
   return (
