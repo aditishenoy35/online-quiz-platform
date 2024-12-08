@@ -89,16 +89,15 @@ exports.getNumberOfQuestions = async (req, res) => {
 
 // Fetch the quiz result for a specific response (user's quiz submission)
 exports.getQuizResults = async (req, res) => {
-  const { responseId } = req.params; // Assume responseId is passed in the URL to fetch a specific response
+  const { responseId } = req.params;
   try {
-    // Find the response by ID and populate the quiz details and question options
     const response = await Response.findById(responseId)
       .populate({
         path: 'quiz',
-        select: 'title questions', // Populate quiz title and questions
+        select: 'title questions',
         populate: {
-          path: 'questions.options', // Populate options for each question
-          select: 'text isCorrect' // Get text and correct answer flag
+          path: 'questions.options',
+          select: 'text isCorrect'
         }
       })
       .lean();
@@ -107,16 +106,29 @@ exports.getQuizResults = async (req, res) => {
       return res.status(404).json({ message: 'Response not found' });
     }
 
-    // Calculate the user's score and track correct and incorrect answers
     let correctAnswers = 0;
     let incorrectAnswers = 0;
     const correctResponses = [];
     const incorrectResponses = [];
+    const skippedQuestions = [];
 
-    response.responses.forEach((userResponse, index) => {
-      const question = response.quiz.questions[index]; // Get the corresponding question
-      const selectedOption = question.options.find(option => option.text === userResponse.selectedOption);
-      
+    const totalQuestions = response.quiz.questions.length;
+
+    // Track answered questions by index
+    const answeredQuestionIds = new Set(response.responses.map((resp) => resp.questionId.toString()));
+
+    response.quiz.questions.forEach((question, index) => {
+      const userResponse = response.responses.find((resp) => resp.questionId.toString() === question._id.toString());
+      if (!userResponse) {
+        // If no response, mark as skipped
+        skippedQuestions.push({
+          questionText: question.text
+        });
+        return;
+      }
+
+      // Check the correctness of the user's response
+      const selectedOption = question.options.find((opt) => opt.text === userResponse.selectedOption);
       if (selectedOption && selectedOption.isCorrect) {
         correctAnswers++;
         correctResponses.push({
@@ -132,15 +144,15 @@ exports.getQuizResults = async (req, res) => {
       }
     });
 
-    // Calculate percentage score
-    const totalQuestions = response.quiz.questions.length;
     const scorePercentage = (correctAnswers / totalQuestions) * 100;
 
-    // Prepare the response data
+    // Prepare response
     const result = {
       score: response.score,
+      totalQuestions,
       correctResponses,
       incorrectResponses,
+      skippedQuestions, // Explicitly list skipped questions
       scorePercentage: scorePercentage.toFixed(2),
     };
 

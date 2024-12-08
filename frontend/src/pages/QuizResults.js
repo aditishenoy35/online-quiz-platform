@@ -42,7 +42,7 @@ const QuizResults = () => {
   }
 
   // Calculate Total Score
-  const numberOfQuestions = quizResult.correctResponses.length + quizResult.incorrectResponses.length;
+  const numberOfQuestions = quizResult.totalQuestions;
   const totalScore = numberOfQuestions * 10;
 
   return (
@@ -72,6 +72,7 @@ const QuizResults = () => {
           <p>
             Incorrect Answers: <span className="incorrect">{quizResult.incorrectResponses.length}</span>
           </p>
+          <p>Questions Skipped: {quizResult.skippedQuestions.length}</p>
         </div>
 
         <div className="actions">
